@@ -138,23 +138,68 @@ function ServicesManager() {
 function RoundsManager() {
   const { data: rounds, refetch } = api.round.getAll.useQuery();
   const createRound = api.round.create.useMutation({ onSuccess: () => refetch() });
+  const updateRound = api.round.update.useMutation({ onSuccess: () => refetch() });
   const deleteRound = api.round.delete.useMutation({ onSuccess: () => refetch() });
+  const setCurrent = api.round.setCurrent.useMutation({ onSuccess: () => refetch() });
   const [form, setForm] = useState({ name: "", description: "", status: "active", isCurrent: false });
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const handleCreateRound = () => {
+  const handleSaveRound = () => {
     const slug = form.name
       .trim()
       .replace(/\s+/g, "-")
       .replace(/[^\w\u0600-\u06FF-]/g, "")
       .toLowerCase()
       || Date.now().toString();
-    createRound.mutate({ ...form, slug });
+
+    if (editingId) {
+      // Update existing round
+      updateRound.mutate({ id: editingId, ...form, slug });
+      if (form.isCurrent) {
+        setCurrent.mutate({ id: editingId });
+      }
+    } else {
+      // Create new round
+      createRound.mutate({ ...form, slug }, {
+        onSuccess: (newRound) => {
+          if (form.isCurrent) {
+            setCurrent.mutate({ id: newRound.id });
+          }
+        },
+      });
+    }
+
+    resetForm();
+  };
+
+  const startEditing = (round: NonNullable<typeof rounds>[number]) => {
+    setEditingId(round.id);
+    setForm({
+      name: round.name,
+      description: round.description ?? "",
+      status: round.status ?? "active",
+      isCurrent: round.isCurrent ?? false,
+    });
+  };
+
+  const resetForm = () => {
     setForm({ name: "", description: "", status: "active", isCurrent: false });
+    setEditingId(null);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm("هل أنت متأكد من حذف هذه الدورة؟")) {
+      deleteRound.mutate({ id });
+      if (editingId === id) resetForm();
+    }
   };
 
   return (
-    <div>        <h2 className="mb-4 text-lg font-bold text-theme">الدورات التدريبية</h2>
-      <div className="mb-6 grid gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:grid-cols-4">
+    <div>
+      <h2 className="mb-4 text-lg font-bold text-theme">الدورات التدريبية</h2>
+
+      {/* Form */}
+      <div className="mb-6 grid gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:grid-cols-5">
         <input placeholder="الاسم" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
           className="rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme placeholder:text-theme-tertiary" />
         <input placeholder="الوصف" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
@@ -165,24 +210,69 @@ function RoundsManager() {
           <option value="upcoming">قادم</option>
           <option value="completed">مكتمل</option>
         </select>
-        <button onClick={handleCreateRound}
-          className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600">
-          إضافة دورة
-        </button>
+        <label className="flex cursor-pointer items-center gap-2 rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme">
+          <input
+            type="checkbox"
+            checked={form.isCurrent}
+            onChange={(e) => setForm({ ...form, isCurrent: e.target.checked })}
+            className="h-4 w-4 rounded border-white/20 bg-white/10 text-brand-500 focus:ring-brand-500"
+          />
+          <span>حالية</span>
+        </label>
+        <div className="flex gap-2">
+          <button onClick={handleSaveRound}
+            className="flex-1 rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600">
+            {editingId ? "حفظ التعديلات" : "إضافة دورة"}
+          </button>
+          {editingId && (
+            <button onClick={resetForm}
+              className="rounded-lg bg-white/10 px-4 py-2 text-sm text-theme-secondary hover:bg-white/20">
+              إلغاء
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* List */}
       <div className="space-y-2">
         {rounds?.map((r) => (
-          <div key={r.id} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3">
-            <div>
-              <div className="text-sm font-medium text-theme">{r.name} {r.isCurrent && <span className="text-brand-400">(حالية)</span>}</div>
-              <div className="text-xs text-dark-500">{r.slug} — {r.status}</div>
+          <div key={r.id}
+            className={`flex items-center justify-between rounded-lg border px-4 py-3 transition cursor-pointer ${
+              editingId === r.id
+                ? "border-brand-500/40 bg-brand-500/10"
+                : "border-white/10 bg-white/[0.02] hover:border-white/20"
+            }`}
+            onClick={() => startEditing(r)}
+          >
+            <div className="flex items-center gap-3">
+              {r.isCurrent && (
+                <span className="h-2 w-2 animate-pulse rounded-full bg-brand-400" title="الدفعة الحالية" />
+              )}
+              <div>
+                <div className="text-sm font-medium text-theme">
+                  {r.name}
+                  {r.isCurrent && <span className="mr-2 text-xs text-brand-400">(حالية)</span>}
+                </div>
+                <div className="text-xs text-dark-500">{r.slug} — {r.status}</div>
+              </div>
             </div>
-            <button onClick={() => deleteRound.mutate({ id: r.id })}
-              className="rounded-lg bg-red-500/10 px-3 py-1 text-xs text-red-400 hover:bg-red-500/20">
-              حذف
-            </button>
+            <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+              {!r.isCurrent && (
+                <button onClick={() => setCurrent.mutate({ id: r.id })}
+                  className="rounded-lg bg-brand-500/10 px-3 py-1 text-xs text-brand-400 hover:bg-brand-500/20">
+                  تعيين كحالية
+                </button>
+              )}
+              <button onClick={() => handleDelete(r.id)}
+                className="rounded-lg bg-red-500/10 px-3 py-1 text-xs text-red-400 hover:bg-red-500/20">
+                حذف
+              </button>
+            </div>
           </div>
         ))}
+        {(!rounds || rounds.length === 0) && (
+          <p className="py-8 text-center text-sm text-theme-tertiary">لا توجد دورات بعد</p>
+        )}
       </div>
     </div>
   );

@@ -77,6 +77,20 @@ export const roundRouter = createTRPCRouter({
       return ctx.db.trainingRound.delete({ where: { id: input.id } });
     }),
 
+  setCurrent: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // Unset all rounds first, then set the specified one
+      await ctx.db.trainingRound.updateMany({
+        where: { isCurrent: true },
+        data: { isCurrent: false },
+      });
+      return ctx.db.trainingRound.update({
+        where: { id: input.id },
+        data: { isCurrent: true },
+      });
+    }),
+
   // Student Highlights
   createHighlight: protectedProcedure
     .input(z.object({
