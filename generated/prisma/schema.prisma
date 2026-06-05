@@ -225,6 +225,25 @@ model CourseSection {
   @@unique([slug, roundId])
 }
 
+// ─── Audit Log (security & admin activity tracking) ───
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  userEmail String?
+  action    String // create, update, delete, login, role_change, settings_change
+  entity    String // service, round, testimonial, faq, curriculum, announcement, certificate, social, user, setting, courseSection, etc.
+  entityId  String?
+  details   String? // JSON string with metadata
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId])
+  @@index([action])
+  @@index([entity])
+}
+
 model SectionImage {
   id        String        @id @default(cuid())
   imageUrl  String

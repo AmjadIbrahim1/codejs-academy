@@ -1,10 +1,7 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcryptjs";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import DiscordProvider from "next-auth/providers/discord";
-
-import { db } from "@/server/db";
 
 /**
  * Module augmentation for `next-auth` types.
@@ -24,6 +21,10 @@ declare module "next-auth" {
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
+ *
+ * IMPORTANT: This file must NOT statically import any server-only modules (db, audit-log).
+ * Those are imported dynamically inside callbacks to prevent Turbopack from bundling
+ * server-only code into the client bundle via the type-import chain (react.tsx → root.ts).
  */
 export const authConfig = {
   providers: [
@@ -43,6 +44,9 @@ export const authConfig = {
         if (!email.endsWith("@codejs.com")) {
           throw new Error("الإيميل لازم يكون من @codejs.com");
         }
+
+        // Dynamic import to prevent client-side bundling of server-only code
+        const { db } = await import("@/server/db");
 
         const user = await db.user.findUnique({
           where: { email },
@@ -66,9 +70,10 @@ export const authConfig = {
       ? [DiscordProvider]
       : []),
   ],
-  adapter: PrismaAdapter(db),
+  // adapter is set in auth/index.ts to avoid server-only imports here
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   pages: {
     signIn: "/login",
@@ -89,5 +94,20 @@ export const authConfig = {
         role: (token.role as string) ?? "student",
       },
     }),
+    async signIn({ user }) {
+      // Log successful logins to the audit log
+      if (user.id && user.email) {
+        // Dynamic import to prevent client-side bundling of server-only code
+        const { logAudit } = await import("@/server/audit-log");
+        logAudit({
+          userId: user.id,
+          userEmail: user.email,
+          action: "login",
+          entity: "auth",
+          entityId: user.id,
+        }).catch(() => {});
+      }
+      return true;
+    },
   },
 } satisfies NextAuthConfig;

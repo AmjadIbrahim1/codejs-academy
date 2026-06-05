@@ -304,6 +304,18 @@ exports.Prisma.CourseSectionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  userEmail: 'userEmail',
+  action: 'action',
+  entity: 'entity',
+  entityId: 'entityId',
+  details: 'details',
+  ip: 'ip',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SectionImageScalarFieldEnum = {
   id: 'id',
   imageUrl: 'imageUrl',
@@ -347,6 +359,7 @@ exports.Prisma.ModelName = {
   SocialLink: 'SocialLink',
   Achievement: 'Achievement',
   CourseSection: 'CourseSection',
+  AuditLog: 'AuditLog',
   SectionImage: 'SectionImage'
 };
 

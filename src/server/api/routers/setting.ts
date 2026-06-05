@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure, adminProcedure } from "@/server/api/trpc";
+
 
 export const settingRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -12,7 +13,7 @@ export const settingRouter = createTRPCRouter({
       return ctx.db.setting.findUnique({ where: { key: input.key } });
     }),
 
-  upsert: protectedProcedure
+  upsert: adminProcedure
     .input(z.object({
       key: z.string(),
       value: z.string(),
@@ -25,7 +26,7 @@ export const settingRouter = createTRPCRouter({
       });
     }),
 
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(z.object({ key: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.setting.delete({ where: { key: input.key } });

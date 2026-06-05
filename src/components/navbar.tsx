@@ -53,11 +53,9 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 font-bold text-white text-sm">
-              JS
-            </div>
+            <img src="/logo.png" alt="Code JS Academy" className="h-8 w-auto" />
             <span className="hidden text-lg font-bold sm:inline text-theme">
-              Code <span className="text-brand-400">JS</span> Academy
+              Code <span className="text-accent-400">JS</span> <span className="text-brand-400">Academy</span>
             </span>
           </Link>
 

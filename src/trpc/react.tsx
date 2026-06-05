@@ -7,7 +7,9 @@ import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import { useState } from "react";
 import SuperJSON from "superjson";
 
-import { type AppRouter } from "@/server/api/root";
+// Import type from .d.ts declaration file to prevent Turbopack from
+// following the import chain into server-only modules
+import type { AppRouter } from "./router-types";
 import { createQueryClient } from "./query-client";
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;

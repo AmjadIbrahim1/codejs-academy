@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure, adminProcedure } from "@/server/api/trpc";
+
 
 export const curriculumRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -15,7 +16,7 @@ export const curriculumRouter = createTRPCRouter({
       });
     }),
 
-  create: protectedProcedure
+  create: adminProcedure
     .input(z.object({
       title: z.string().min(1),
       description: z.string().optional(),
@@ -30,7 +31,7 @@ export const curriculumRouter = createTRPCRouter({
       return ctx.db.curriculumTopic.create({ data: input });
     }),
 
-  update: protectedProcedure
+  update: adminProcedure
     .input(z.object({
       id: z.string(),
       title: z.string().optional(),
@@ -47,7 +48,7 @@ export const curriculumRouter = createTRPCRouter({
       return ctx.db.curriculumTopic.update({ where: { id }, data });
     }),
 
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.curriculumTopic.delete({ where: { id: input.id } });

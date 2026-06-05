@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure, adminProcedure } from "@/server/api/trpc";
+
 
 export const roundRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -25,7 +26,7 @@ export const roundRouter = createTRPCRouter({
       });
     }),
 
-  create: protectedProcedure
+  create: adminProcedure
     .input(z.object({
       name: z.string().min(1),
       slug: z.string().min(1),
@@ -47,7 +48,7 @@ export const roundRouter = createTRPCRouter({
       return ctx.db.trainingRound.create({ data });
     }),
 
-  update: protectedProcedure
+  update: adminProcedure
     .input(z.object({
       id: z.string(),
       name: z.string().optional(),
@@ -71,13 +72,13 @@ export const roundRouter = createTRPCRouter({
       return ctx.db.trainingRound.update({ where: { id }, data: updateData });
     }),
 
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.trainingRound.delete({ where: { id: input.id } });
     }),
 
-  setCurrent: protectedProcedure
+  setCurrent: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       // Unset all rounds first, then set the specified one
@@ -92,7 +93,7 @@ export const roundRouter = createTRPCRouter({
     }),
 
   // Student Highlights
-  createHighlight: protectedProcedure
+  createHighlight: adminProcedure
     .input(z.object({
       studentName: z.string().min(1),
       photoUrl: z.string().optional(),
@@ -105,7 +106,7 @@ export const roundRouter = createTRPCRouter({
       return ctx.db.studentHighlight.create({ data: input });
     }),
 
-  updateHighlight: protectedProcedure
+  updateHighlight: adminProcedure
     .input(z.object({
       id: z.string(),
       studentName: z.string().optional(),
@@ -119,7 +120,7 @@ export const roundRouter = createTRPCRouter({
       return ctx.db.studentHighlight.update({ where: { id }, data });
     }),
 
-  deleteHighlight: protectedProcedure
+  deleteHighlight: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.studentHighlight.delete({ where: { id: input.id } });

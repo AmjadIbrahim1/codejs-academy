@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure, adminProcedure } from "@/server/api/trpc";
+
 
 export const courseSectionRouter = createTRPCRouter({
   // ── Get sections for a round ──
@@ -42,7 +43,7 @@ export const courseSectionRouter = createTRPCRouter({
 
   // ── Create / Update / Delete sections (admin only) ──
 
-  upsert: protectedProcedure
+  upsert: adminProcedure
     .input(z.object({
       id: z.string().optional(),
       name: z.string().min(1),
@@ -60,14 +61,14 @@ export const courseSectionRouter = createTRPCRouter({
       return ctx.db.courseSection.create({ data });
     }),
 
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.courseSection.delete({ where: { id: input.id } });
     }),
 
   // ── Initialize the 6 default sections for a round ──
-  initializeDefaults: protectedProcedure
+  initializeDefaults: adminProcedure
     .input(z.object({ roundId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const defaults = [
@@ -98,7 +99,7 @@ export const courseSectionRouter = createTRPCRouter({
 
   // ── Images ──
 
-  addImage: protectedProcedure
+  addImage: adminProcedure
     .input(z.object({
       sectionId: z.string().min(1),
       imageUrl: z.string().min(1),
@@ -109,13 +110,13 @@ export const courseSectionRouter = createTRPCRouter({
       return ctx.db.sectionImage.create({ data: input });
     }),
 
-  deleteImage: protectedProcedure
+  deleteImage: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.sectionImage.delete({ where: { id: input.id } });
     }),
 
-  updateImageOrder: protectedProcedure
+  updateImageOrder: adminProcedure
     .input(z.object({
       id: z.string(),
       order: z.number(),

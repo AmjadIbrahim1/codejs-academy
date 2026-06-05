@@ -1,12 +1,13 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure, adminProcedure } from "@/server/api/trpc";
+
 
 export const socialRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.socialLink.findMany({ orderBy: { order: "asc" } });
   }),
 
-  create: protectedProcedure
+  create: adminProcedure
     .input(z.object({
       name: z.string().min(1),
       url: z.string().url(),
@@ -17,7 +18,7 @@ export const socialRouter = createTRPCRouter({
       return ctx.db.socialLink.create({ data: input });
     }),
 
-  update: protectedProcedure
+  update: adminProcedure
     .input(z.object({
       id: z.string(),
       name: z.string().optional(),
@@ -30,7 +31,7 @@ export const socialRouter = createTRPCRouter({
       return ctx.db.socialLink.update({ where: { id }, data });
     }),
 
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.socialLink.delete({ where: { id: input.id } });

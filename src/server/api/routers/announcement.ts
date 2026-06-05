@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, publicProcedure, adminProcedure } from "@/server/api/trpc";
+
 
 export const announcementRouter = createTRPCRouter({
   getActive: publicProcedure.query(({ ctx }) => {
@@ -9,11 +10,11 @@ export const announcementRouter = createTRPCRouter({
     });
   }),
 
-  getAll: protectedProcedure.query(({ ctx }) => {
+  getAll: adminProcedure.query(({ ctx }) => {
     return ctx.db.announcement.findMany({ orderBy: { createdAt: "desc" } });
   }),
 
-  create: protectedProcedure
+  create: adminProcedure
     .input(z.object({
       title: z.string().min(1),
       content: z.string().min(1),
@@ -23,7 +24,7 @@ export const announcementRouter = createTRPCRouter({
       return ctx.db.announcement.create({ data: input });
     }),
 
-  update: protectedProcedure
+  update: adminProcedure
     .input(z.object({
       id: z.string(),
       title: z.string().optional(),
@@ -36,7 +37,7 @@ export const announcementRouter = createTRPCRouter({
       return ctx.db.announcement.update({ where: { id }, data });
     }),
 
-  delete: protectedProcedure
+  delete: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       return ctx.db.announcement.delete({ where: { id: input.id } });
