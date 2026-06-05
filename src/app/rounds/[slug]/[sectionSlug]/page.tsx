@@ -1,6 +1,5 @@
 "use client";
 
-import { use } from "react";
 import Link from "next/link";
 import { api } from "@/trpc/react";
 
@@ -16,9 +15,9 @@ const SECTION_META: Record<string, { icon: string; label: string }> = {
 export default function SectionGalleryPage({
   params,
 }: {
-  params: Promise<{ slug: string; sectionSlug: string }>;
+  params: { slug: string; sectionSlug: string };
 }) {
-  const { slug, sectionSlug } = use(params);
+  const { slug, sectionSlug } = params;
 
   const { data: round } = api.round.getBySlug.useQuery({ slug });
   const { data: section, isLoading } = api.courseSection.getBySlug.useQuery({

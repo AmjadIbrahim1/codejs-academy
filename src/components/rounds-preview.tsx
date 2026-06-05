@@ -57,7 +57,7 @@ export function RoundsPreview() {
               )}
 
               <Link
-                href="/rounds"
+                href={`/rounds/${currentRound.slug}`}
                 className="inline-flex items-center gap-2 rounded-xl bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-600"
               >
                 شوف تفاصيل الدفعة كاملة

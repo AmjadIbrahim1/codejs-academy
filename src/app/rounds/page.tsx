@@ -3,215 +3,167 @@
 import Link from "next/link";
 import { api } from "@/trpc/react";
 
-const marqueeStudents = [
-  { name: "أحمد محمد", achievement: "أفضل طالب - الدفعة الأولى" },
-  { name: "سارة حسن", achievement: "أفضل مساهم" },
-  { name: "عمر علي", achievement: "بطل الاختبارات" },
-  { name: "مريم خالد", achievement: "امتياز في المهام" },
-  { name: "خالد سعيد", achievement: "أفضل مقابلة" },
-  { name: "نور الدين", achievement: "قائد مجتمع" },
-  { name: "يوسف ر.", achievement: "رابح الامتحان الأسبوعي" },
-  { name: "منى ت.", achievement: "الأفضل أداءً" },
-];
-
-const categories = [
-  {
-    title: "أفضل الطلاب",
-    slug: "session-stars",
-    description: "طلاب شاركوا في المحاضرات",
-    icon: "🎤",
-    students: ["أحمد م.", "سارة ه.", "عمر أ.", "مريم ك.", "خالد س.", "نور إ."],
-  },
-  {
-    title: "أبطال الاختبارات",
-    slug: "quiz-champions",
-    description: "طلاب تميزوا في الاختبارات القصيرة",
-    icon: "📊",
-    students: ["يوسف ر.", "منى ت.", "حسن م.", "سلمى أ.", "إبراهيم ف."],
-  },
-  {
-    title: "امتياز في المهام",
-    slug: "task-champions",
-    description: "طلاب أدوا بشكل ممتاز في المهام",
-    icon: "💻",
-    students: ["علي ه.", "مريم ك.", "عمرو ك.", "ليلى ن.", "دينا و."],
-  },
-  {
-    title: "مساهمون مجتمعيون",
-    slug: "community-contributors",
-    description: "طلاب ساهموا في المجتمع",
-    icon: "🤝",
-    students: ["محمد ج.", "نور إ.", "حسن م.", "سلمى أ."],
-  },
-  {
-    title: "مقابلات متميزة",
-    slug: "distinguished-interviews",
-    description: "طلاب تميزوا في المقابلات",
-    icon: "🎯",
-    students: ["خالد س.", "دينا و.", "محمود ب.", "إسلام ر."],
-  },
-  {
-    title: "أداء امتحانات",
-    slug: "exam-performers",
-    description: "طلاب تميزوا في الامتحانات الأسبوعية",
-    icon: "🏅",
-    students: ["ندى أ.", "كريم ه.", "آية س.", "يوسف ر.", "منى ت."],
-  },
-];
-
-const testimonials = [
-  {
-    name: "مريم ك.",
-    role: "طالب بالدفعة الأولى",
-    content:
-      "نظام الدفعات المنظمة خلاني متحمس طوال البرنامج. المنافسة مع زملائي دفعتني للأفضل.",
-  },
-  {
-    name: "أحمد م.",
-    role: "طالب بالدفعة الأولى",
-    content:
-      "التكريم كأفضل مؤدي أداني الثقة إني أكمل في مجال التطوير. الدعم المجتمعي لا يُعقَل.",
-  },
-  {
-    name: "سارة ه.",
-    role: "طالب بالدفعة الأولى",
-    content:
-      "التحديات الأسبوعية والتكريم المجتمعي خلوا التعلم ممتع وتنافسي بأحسن شكل ممكن.",
-  },
-];
-
 export default function RoundsPage() {
-  const { data: currentRound } = api.round.getCurrent.useQuery();
-  const roundSlug = currentRound?.slug ?? "";
+  const { data: rounds, isLoading } = api.round.getAll.useQuery();
+
+  const currentRound = rounds?.find((r) => r.isCurrent);
+  const otherRounds = rounds?.filter((r) => !r.isCurrent) ?? [];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-16 bg-theme">
+        <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+          <div className="animate-pulse space-y-6">
+            <div className="mx-auto h-6 w-32 rounded-full bg-theme-card" />
+            <div className="mx-auto h-10 w-96 rounded-lg bg-theme-card" />
+            <div className="mx-auto h-4 w-72 rounded bg-theme-card" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-16 bg-theme">
-      {/* Marquee */}
-      <div className="overflow-hidden border-b border-theme divider-theme py-3">
-        <div className="marquee flex gap-8">
-          {[...marqueeStudents, ...marqueeStudents].map((s, i) => (
-            <div key={i} className="flex items-center gap-2 whitespace-nowrap text-sm">
-              <span className="h-2 w-2 rounded-full bg-brand-400" />
-              <span className="font-medium text-theme">{s.name}</span>
-              <span className="text-theme-tertiary">— {s.achievement}</span>
+      {/* Hero */}
+      <section className="border-b border-theme divider-theme py-24">
+        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <div className="mb-8 fade-in-up">
+            <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-accent-400">
+              الدورات التدريبية
+            </span>
+          </div>
+          <h1 className="fade-in-up mb-4 text-4xl font-bold text-theme sm:text-5xl">
+            الدفعات{" "}
+            <span className="text-gradient-accent">التدريبية</span>
+          </h1>
+          <p className="fade-in-up mx-auto mb-12 max-w-2xl text-lg text-theme-secondary">
+            دفعات تدريبية منظمة بأماكن محدودة. كل دفعة بتجيب معاها مجتمع جديد من
+            المتعلمين الجادين.
+          </p>
+
+          {/* Current Round Hero Card */}
+          {currentRound ? (
+            <div className="fade-in-up relative overflow-hidden rounded-3xl border border-brand-500/20 bg-gradient-to-br from-brand-500/[0.08] via-theme-secondary to-accent-500/[0.05] p-8 text-center lg:p-16">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 via-accent-500 to-brand-500" />
+              <div className="absolute -top-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-brand-500/20 blur-[100px]" />
+
+              <div className="relative">
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-4 py-1.5 text-sm text-brand-300">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-brand-400" />
+                  {currentRound.status === "upcoming" ? "قريباً" : "التسجيل مفتوح"}
+                </div>
+
+                <h2 className="mb-4 text-3xl font-bold text-theme sm:text-4xl">
+                  {currentRound.name}
+                </h2>
+
+                <p className="mx-auto mb-8 max-w-2xl text-lg text-theme-secondary">
+                  {currentRound.description ?? ""}
+                </p>
+
+                {/* Pricing */}
+                {(currentRound.priceEGP || currentRound.priceUSD) && (
+                  <div className="mx-auto mb-10 flex max-w-md flex-col gap-4 sm:flex-row">
+                    {currentRound.priceEGP && (
+                      <div className="flex-1 rounded-xl border border-brand-500/20 bg-brand-500/5 p-4">
+                        <div className="text-2xl font-bold text-brand-400">
+                          {currentRound.priceEGP.toLocaleString()} ج.م
+                        </div>
+                        <div className="text-xs text-theme-tertiary">مصر</div>
+                      </div>
+                    )}
+                    {currentRound.priceUSD && (
+                      <div className="flex-1 rounded-xl border border-accent-500/20 bg-accent-500/5 p-4">
+                        <div className="text-2xl font-bold text-accent-400">
+                          ${currentRound.priceUSD} USD
+                        </div>
+                        <div className="text-xs text-theme-tertiary">خارج مصر</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <Link
+                  href={`/rounds/${currentRound.slug}`}
+                  className="inline-flex items-center gap-2 rounded-xl bg-brand-500 px-8 py-3.5 text-base font-semibold text-white transition hover:bg-brand-600 glow-green"
+                >
+                  شوف تفاصيل الدفعة كاملة
+                  <svg className="h-4 w-4 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+              </div>
             </div>
-          ))}
+          ) : (
+            <div className="rounded-3xl border border-theme-card bg-theme-card p-12 text-center">
+              <p className="text-theme-tertiary">لا توجد دفعة حالية</p>
+            </div>
+          )}
         </div>
-      </div>
+      </section>
 
-      {/* Testimonials strip */}
-      <div className="border-b border-theme divider-theme bg-theme-card py-6">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="marquee-reverse flex gap-6">
-            {[...testimonials, ...testimonials].map((t, i) => (
-              <div key={i} className="flex-shrink-0 rounded-xl border border-theme-card bg-theme-card px-5 py-3">
-                <p className="mb-1 text-sm text-theme-secondary">&ldquo;{t.content}&rdquo;</p>
-                <div className="text-xs text-theme-tertiary">— {t.name}, {t.role}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Current Round */}
-      <section className="border-b border-theme divider-theme py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl border border-brand-500/20 bg-gradient-to-br from-brand-500/[0.08] via-theme-secondary to-accent-500/[0.05] p-8 text-center lg:p-16"
-          >
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 via-accent-500 to-brand-500" />
-            <div className="absolute -top-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full bg-brand-500/20 blur-[100px]" />
-
-            <div className="relative">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-4 py-1.5 text-sm text-brand-300">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-brand-400" />
-                الدفعة الحالية
-              </div>
-              <h1 className="mb-4 text-4xl font-bold text-theme sm:text-5xl">
-                الدفعة{" "}
-                <span className="text-gradient">الأولى</span>
-              </h1>
-              <p className="mx-auto mb-8 max-w-2xl text-lg text-theme-secondary">
-                أول دفعة تدريبية. 6 شهور من التدريب المكثف في البرمجة
-                بتغطية HTML، CSS، JavaScript، TypeScript، والتطوير الحديث.
-              </p>
-              <div className="mx-auto flex max-w-md flex-col gap-4 sm:flex-row">
-                <div className="flex-1 rounded-xl border border-brand-500/20 bg-brand-500/5 p-4">
-                  <div className="text-2xl font-bold text-brand-400">1,100 ج.م</div>
-                  <div className="text-xs text-theme-tertiary">مصر - خصم 45%</div>
-                </div>
-                <div className="flex-1 rounded-xl border border-accent-500/20 bg-accent-500/5 p-4">
-                  <div className="text-2xl font-bold text-accent-400">$30 USD</div>
-                  <div className="text-xs text-theme-tertiary">خارج مصر - خصم 45%</div>
-                </div>
-              </div>
-            </div>            </div>
-          </div>
-        </section>
-
-      {/* Categories Grid */}
-      <section className="py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 text-center">
-            <h2 className="text-3xl font-bold text-theme sm:text-4xl">
-              أبرز أحداث{" "}
-              <span className="text-gradient">الدفعة الأولى</span>
+      {/* Other Rounds */}
+      {otherRounds.length > 0 && (
+        <section className="py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="mb-12 text-center text-2xl font-bold text-theme">
+              الدفعات الأخرى
             </h2>
-            <p className="mt-4 text-theme-secondary">
-              إحنا بنحتفي بأفضل الطلاب أداءً في كل الفئات
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((cat, i) => {
-              const href = roundSlug ? `/rounds/${roundSlug}/${cat.slug}` : "#";
-              const cardContent = (
-                <>
-                  <div className="mb-3 flex items-center gap-3">
-                    <span className="text-2xl">{cat.icon}</span>
-                    <div>
-                      <h3 className="text-sm font-semibold text-theme">{cat.title}</h3>
-                      <p className="text-xs text-theme-tertiary">{cat.description}</p>
+            <div className="stagger-children grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {otherRounds.map((round) => (
+                <Link
+                  key={round.id}
+                  href={`/rounds/${round.slug}`}
+                  className="group rounded-2xl border border-theme-card bg-theme-card p-6 transition hover:border-brand-500/30 hover:shadow-lg hover:shadow-brand-500/5"
+                >
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3 py-1 text-xs text-accent-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-accent-400" />
+                    {round.status === "upcoming" ? "قريباً" : round.status === "completed" ? "مكتملة" : round.status}
+                  </div>
+                  <h3 className="mb-2 text-xl font-bold text-theme group-hover:text-brand-400 transition-colors">
+                    {round.name}
+                  </h3>
+                  <p className="mb-4 text-sm text-theme-tertiary line-clamp-2">
+                    {round.description ?? ""}
+                  </p>
+                  {round.highlights && round.highlights.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {round.highlights.slice(0, 3).map((h, i) => (
+                        <span
+                          key={h.id ?? i}
+                          className="rounded-lg border border-theme-card bg-theme px-2 py-0.5 text-[11px] text-theme-secondary"
+                        >
+                          {h.studentName}
+                        </span>
+                      ))}
+                      {round.highlights.length > 3 && (
+                        <span className="text-xs text-theme-tertiary">
+                          +{round.highlights.length - 3}
+                        </span>
+                      )}
                     </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {cat.students.map((student) => (
-                      <span
-                        key={student}
-                        className="rounded-lg border border-theme-card bg-theme-card px-2.5 py-1 text-xs text-theme-secondary"
-                      >
-                        {student}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="mt-3 flex items-center gap-1 text-xs text-brand-400">
-                    عرض الصور
-                    <svg className="h-3 w-3 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  )}
+                  <div className="mt-4 flex items-center gap-1 text-sm text-brand-400 opacity-0 transition group-hover:opacity-100">
+                    عرض التفاصيل
+                    <svg className="h-3.5 w-3.5 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </div>
-                </>
-              );
-
-              return roundSlug ? (
-                <Link
-                  key={cat.title}
-                  href={href}
-                  className="card-hover rounded-2xl border border-theme-card bg-theme-card p-6 block transition hover:border-brand-500/30 hover:shadow-lg hover:shadow-brand-500/5"
-                >
-                  {cardContent}
                 </Link>
-              ) : (
-                <div
-                  key={cat.title}
-                  className="card-hover rounded-2xl border border-theme-card bg-theme-card p-6"
-                >
-                  {cardContent}
-                </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {(!rounds || rounds.length === 0) && (
+        <section className="py-20">
+          <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+            <p className="text-theme-tertiary">لا توجد دفعات تدريبية متاحة حالياً</p>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
