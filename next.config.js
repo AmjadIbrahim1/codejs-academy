@@ -21,20 +21,6 @@ const config = {
 
   // 🔥 أهم سطر في الحل
   output: "standalone",
-
-  webpack: (config) => {
-    config.watchOptions = {
-      ignored: [
-        "**/node_modules/**",
-        "C:/Users/**",
-        "**/Application Data/**",
-        "**/AppData/**",
-        "C:\\Users\\Elamen Soft\\**",
-      ],
-    };
-
-    return config;
-  },
 };
 
 export default config;
