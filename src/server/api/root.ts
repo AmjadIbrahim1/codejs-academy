@@ -11,6 +11,7 @@ import { certificateRouter } from "@/server/api/routers/certificate";
 import { authRouter } from "@/server/api/routers/auth";
 import { settingRouter } from "@/server/api/routers/setting";
 import { courseSectionRouter } from "@/server/api/routers/courseSection";
+import { reviewImageRouter } from "@/server/api/routers/reviewImage";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
 export const appRouter = createTRPCRouter({
@@ -27,6 +28,7 @@ export const appRouter = createTRPCRouter({
   auth: authRouter,
   setting: settingRouter,
   courseSection: courseSectionRouter,
+  reviewImage: reviewImageRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -225,6 +225,20 @@ model CourseSection {
     @@unique([slug, roundId])
 }
 
+// ─── Review Images (for customer & student review image galleries) ───
+
+model ReviewImage {
+    id        String   @id @default(cuid())
+    imageUrl  String
+    caption   String?
+    type      String   // "customer" or "student"
+    order     Int      @default(0)
+    createdAt DateTime @default(now())
+
+    @@index([type])
+    @@index([type, order])
+}
+
 // ─── Audit Log (security & admin activity tracking) ───
 
 model AuditLog {

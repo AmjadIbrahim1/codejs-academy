@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "مصر",
     "كورس برمجة اونلاين",
   ],
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [{ rel: "icon", url: "/logo.png" }],
   openGraph: {
     title: "Code JS Academy — أتقن البرمجة وحوّل مستقبلك",
     description:

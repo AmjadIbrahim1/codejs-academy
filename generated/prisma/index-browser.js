@@ -304,6 +304,15 @@ exports.Prisma.CourseSectionScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ReviewImageScalarFieldEnum = {
+  id: 'id',
+  imageUrl: 'imageUrl',
+  caption: 'caption',
+  type: 'type',
+  order: 'order',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -359,6 +368,7 @@ exports.Prisma.ModelName = {
   SocialLink: 'SocialLink',
   Achievement: 'Achievement',
   CourseSection: 'CourseSection',
+  ReviewImage: 'ReviewImage',
   AuditLog: 'AuditLog',
   SectionImage: 'SectionImage'
 };

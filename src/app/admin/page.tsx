@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { AdminCourseSections } from "@/components/admin-course-sections";
 
-type Tab = "services" | "rounds" | "testimonials" | "faq" | "curriculum" | "announcements" | "certificates" | "social" | "users" | "courseSections";
+type Tab = "services" | "rounds" | "testimonials" | "faq" | "curriculum" | "announcements" | "certificates" | "social" | "users" | "courseSections" | "customerReviews" | "studentReviews";
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -41,6 +41,8 @@ export default function AdminPage() {
     { id: "social" as Tab, label: "روابط التواصل" },
     { id: "users" as Tab, label: "المستخدمين" },
     { id: "courseSections" as Tab, label: "أقسام التكريم" },
+    { id: "customerReviews" as Tab, label: "صور العملاء" },
+    { id: "studentReviews" as Tab, label: "صور الطلاب" },
   ];
 
   return (
@@ -82,6 +84,8 @@ export default function AdminPage() {
           {activeTab === "social" && <SocialManager />}
           {activeTab === "users" && <UsersManager />}
           {activeTab === "courseSections" && <AdminCourseSections />}
+          {activeTab === "customerReviews" && <ReviewImagesManager type="customer" title="صور العملاء" />}
+          {activeTab === "studentReviews" && <ReviewImagesManager type="student" title="صور الطلاب" />}
         </div>
       </div>
     </div>
@@ -531,6 +535,106 @@ function CertificatesManager() {
             </button>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Review Images Manager ───
+
+function ReviewImagesManager({ type, title }: { type: "customer" | "student"; title: string }) {
+  const { data: images, refetch } = api.reviewImage.getByType.useQuery({ type });
+  const createMutation = api.reviewImage.create.useMutation({ onSuccess: () => refetch() });
+  const deleteMutation = api.reviewImage.delete.useMutation({ onSuccess: () => refetch() });
+  const [uploading, setUploading] = useState(false);
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error ?? "فشل الرفع");
+        return;
+      }
+
+      const { url } = await res.json();
+      await createMutation.mutateAsync({ imageUrl: url, type });
+    } catch (err) {
+      alert("فشل الرفع");
+      console.error(err);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  return (
+    <div>
+      <h2 className="mb-4 text-lg font-bold text-theme">{title}</h2>
+
+      {/* Upload */}
+      <div className="mb-6 rounded-xl border border-dashed border-brand-500/30 bg-brand-500/[0.03] p-6 text-center">
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:opacity-50">
+          {uploading ? (
+            <span className="flex items-center gap-2">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              جاري الرفع...
+            </span>
+          ) : (
+            <span className="flex items-center gap-2">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+              إضافة صورة
+            </span>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleUpload}
+            disabled={uploading}
+            className="hidden"
+          />
+        </label>
+        <p className="mt-2 text-xs text-theme-tertiary">JPG, PNG, WebP, GIF — حد أقصى 5 MB</p>
+      </div>
+
+      {/* Image Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {images?.map((img) => (
+          <div key={img.id} className="group relative overflow-hidden rounded-xl border border-theme-card bg-theme-card">
+            <img
+              src={img.imageUrl}
+              alt={img.caption ?? "صورة"}
+              className="h-48 w-full object-cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/60 opacity-0 transition group-hover:opacity-100">
+              <button
+                onClick={() => deleteMutation.mutate({ id: img.id })}
+                className="rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600"
+              >
+                حذف
+              </button>
+            </div>
+            <div className="border-t border-theme-card bg-theme-card px-3 py-2">
+              <p className="truncate text-xs text-theme-tertiary">#{img.order} — {new Date(img.createdAt).toLocaleDateString("ar-EG")}</p>
+            </div>
+          </div>
+        ))}
+        {(!images || images.length === 0) && (
+          <p className="col-span-full py-8 text-center text-sm text-theme-tertiary">لا توجد صور بعد. ارفع أول صورة!</p>
+        )}
       </div>
     </div>
   );

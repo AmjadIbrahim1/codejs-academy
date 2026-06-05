@@ -7,6 +7,7 @@ import { RoundsPreview } from "@/components/rounds-preview";
 import { AchievementsSection } from "@/components/achievements-section";
 import { CertificatesSection } from "@/components/certificates-section";
 import { TestimonialsSection } from "@/components/testimonials-section";
+import { StudentReviewsSection } from "@/components/student-reviews-section";
 import { PricingSection } from "@/components/pricing-section";
 import { DiscordSection } from "@/components/discord-section";
 import { FAQSection } from "@/components/faq-section";
@@ -65,6 +66,7 @@ export default function ProgramOverviewPage() {
       <RoundsPreview />
       <AchievementsSection />
       <CertificatesSection />
+      <StudentReviewsSection />
       <TestimonialsSection />
       <PricingSection />
       <DiscordSection />
