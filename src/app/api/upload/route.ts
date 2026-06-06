@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir, access } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import crypto from "crypto";
 
 // ─── Config ───
@@ -41,9 +40,7 @@ export async function POST(request: Request) {
     // ─── Validate file size ───
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        {
-          error: `حجم الملف كبير. الحد الأقصى 5 MB.`,
-        },
+        { error: `حجم الملف كبير. الحد الأقصى 5 MB.` },
         { status: 400 },
       );
     }
@@ -95,7 +92,7 @@ export async function POST(request: Request) {
 
     // ─── Validate file extension ───
     const originalName = file.name;
-    const ext = path.extname(originalName).toLowerCase();
+    const ext = originalName.substring(originalName.lastIndexOf(".")).toLowerCase();
     if (!ALLOWED_EXTENSIONS.has(ext)) {
       return NextResponse.json(
         { error: "امتداد الملف مش مسموح به" },
@@ -104,35 +101,19 @@ export async function POST(request: Request) {
     }
 
     // ─── Sanitize filename (prevent path traversal) ───
-    const safeBase = path
-      .basename(originalName, ext)
-      .replace(/[^a-zA-Z0-9_-]/g, "_")
+    const safeBase = originalName
+      .substring(0, originalName.lastIndexOf("."))
+      .replace(/[^a-zA-Z0-9_\u0600-\u06FF-]/g, "_")
       .slice(0, 64);
     const randomId = crypto.randomBytes(8).toString("hex");
     const fileName = `${randomId}-${safeBase}${ext}`;
 
-    // ─── Save to public/uploads ───
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    try {
-      await access(uploadDir);
-    } catch {
-      await mkdir(uploadDir, { recursive: true });
-    }
+    // ─── Upload to Vercel Blob ───
+    const blob = await put(fileName, file, {
+      access: "public",
+    });
 
-    // ─── Prevent path traversal in final path ───
-    const resolvedPath = path.resolve(uploadDir, fileName);
-    if (!resolvedPath.startsWith(uploadDir)) {
-      return NextResponse.json(
-        { error: "خطأ في اسم الملف" },
-        { status: 400 },
-      );
-    }
-
-    await writeFile(resolvedPath, buffer);
-
-    const imageUrl = `/uploads/${fileName}`;
-
-    return NextResponse.json({ url: imageUrl });
+    return NextResponse.json({ url: blob.url });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
@@ -141,5 +122,7 @@ export async function POST(request: Request) {
     );
   }
 }
+
+
 
 

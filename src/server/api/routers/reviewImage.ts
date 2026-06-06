@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { del } from "@vercel/blob";
 import { createTRPCRouter, publicProcedure, adminProcedure } from "@/server/api/trpc";
 
 export const reviewImageRouter = createTRPCRouter({
@@ -46,10 +47,23 @@ export const reviewImageRouter = createTRPCRouter({
 
   /**
    * Delete a review image (admin only).
+   * Also removes the file from Vercel Blob.
    */
   delete: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const img = await ctx.db.reviewImage.findUnique({ where: { id: input.id } });
+      if (!img) throw new Error("Image not found");
+
+      // Remove from Vercel Blob if it's a blob URL
+      if (img.imageUrl && img.imageUrl.includes(".public.blob.vercel-storage.com")) {
+        try {
+          await del(img.imageUrl);
+        } catch (e) {
+          console.error("Failed to delete blob:", e);
+        }
+      }
+
       return ctx.db.reviewImage.delete({ where: { id: input.id } });
     }),
 

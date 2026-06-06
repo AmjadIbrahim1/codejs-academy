@@ -20,7 +20,12 @@ const config = {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 1080, 1920],
     // Only allow images from trusted sources
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      },
+    ],
   },
 
   // 🔥 أهم سطر في الحل

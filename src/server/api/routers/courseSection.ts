@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { del } from "@vercel/blob";
 import { createTRPCRouter, publicProcedure, adminProcedure } from "@/server/api/trpc";
 
 
@@ -113,6 +114,18 @@ export const courseSectionRouter = createTRPCRouter({
   deleteImage: adminProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const img = await ctx.db.sectionImage.findUnique({ where: { id: input.id } });
+      if (!img) throw new Error("Image not found");
+
+      // Remove from Vercel Blob if it's a blob URL
+      if (img.imageUrl && img.imageUrl.includes(".public.blob.vercel-storage.com")) {
+        try {
+          await del(img.imageUrl);
+        } catch (e) {
+          console.error("Failed to delete blob:", e);
+        }
+      }
+
       return ctx.db.sectionImage.delete({ where: { id: input.id } });
     }),
 
