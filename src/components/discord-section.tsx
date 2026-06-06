@@ -17,7 +17,7 @@ const roles = [
   { name: "مساعد", desc: "أعضاء المجتمع اللي بيساعدوا غيرهم", color: "text-green-400" },
   { name: "مساعد متقدم", desc: "أعضاء متمرسين عندهم معرفة عميقة", color: "text-blue-400" },
   { name: "مرشد", desc: "مرشدين البرنامج الرسميين", color: "text-purple-400" },
-  { name: "بطل اختبارات", desc: "أفضل المؤدين في الاختبارات", color: "text-accent-400" },
+  { name: "بطل اختبارات", desc: "أفضل المؤدين في الاختبارات", color: "text-theme-gold" },
   { name: "أستاذ مهام", desc: "امتياز في مهام البرمجة", color: "text-orange-400" },
 ];
 

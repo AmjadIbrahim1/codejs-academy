@@ -29,7 +29,7 @@ export default function RoundsPage() {
       <section className="border-b border-theme divider-theme py-24">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <div className="mb-8 fade-in-up">
-            <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-accent-400">
+            <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-theme-gold">
               الدورات التدريبية
             </span>
           </div>
@@ -117,7 +117,7 @@ export default function RoundsPage() {
                   href={`/rounds/${round.slug}`}
                   className="group rounded-2xl border border-theme-card bg-theme-card p-6 transition hover:border-brand-500/30 hover:shadow-lg hover:shadow-brand-500/5"
                 >
-                  <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3 py-1 text-xs text-accent-400">
+                  <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3 py-1 text-xs text-theme-gold">
                     <span className="h-1.5 w-1.5 rounded-full bg-accent-400" />
                     {round.status === "upcoming" ? "قريباً" : round.status === "completed" ? "مكتملة" : round.status}
                   </div>

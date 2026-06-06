@@ -27,7 +27,7 @@ export default function PricingPage() {
             <div className="relative overflow-hidden rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-500/[0.08] to-theme-secondary p-8">
               <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-brand-500/20 blur-[80px]" />
               <div className="relative">
-                <div className="mb-4 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-accent-400">
+                <div className="mb-4 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-theme-gold">
                   45% خصم — لفترة محدودة
                 </div>
                 <h2 className="mb-2 text-xl font-bold text-theme">داخل مصر</h2>
@@ -67,12 +67,12 @@ export default function PricingPage() {
             <div className="relative overflow-hidden rounded-2xl border border-accent-500/20 bg-gradient-to-br from-accent-500/[0.08] to-theme-secondary p-8">
               <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-accent-500/20 blur-[80px]" />
               <div className="relative">
-                <div className="mb-4 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-accent-400">
+                <div className="mb-4 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-theme-gold">
                   45% خصم — لفترة محدودة
                 </div>
                 <h2 className="mb-2 text-xl font-bold text-theme">خارج مصر</h2>
                 <div className="mb-6 flex items-baseline gap-3">
-                  <span className="text-4xl font-bold text-accent-400">$30 USD</span>
+                  <span className="text-4xl font-bold text-theme-gold">$30 USD</span>
                   <span className="text-lg text-theme-tertiary line-through">$55 USD</span>
                 </div>
                 <ul className="mb-8 space-y-3 text-sm text-theme-secondary">
@@ -117,7 +117,7 @@ export default function PricingPage() {
                 <div className="mt-1 text-xs text-theme-tertiary">حول الفلوس مباشرة</div>
               </div>
               <div className="rounded-xl border border-accent-500/20 bg-accent-500/5 p-4">
-                <div className="font-semibold text-accent-400">كاش واليت</div>
+                <div className="font-semibold text-theme-gold">كاش واليت</div>
                 <div className="mt-1 text-xs text-theme-tertiary">تحويل من المحفظة</div>
               </div>
               <div className="rounded-xl border border-theme-secondary bg-theme-card p-4">

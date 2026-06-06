@@ -14,7 +14,7 @@ export function RoundsPreview() {
     <section id="rounds" className="border-t border-theme divider-theme py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center fade-in-up">
-          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-accent-400">
+          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-theme-gold">
             الدورات التدريبية
           </span>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
@@ -81,7 +81,7 @@ export function RoundsPreview() {
                 key={r.id}
                 className="rounded-2xl border border-theme-card bg-theme-card p-6 opacity-60"
               >
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3 py-1 text-xs text-accent-400">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent-500/10 px-3 py-1 text-xs text-theme-gold">
                   <span className="h-1.5 w-1.5 rounded-full bg-accent-400" />
                   قريباً
                 </div>

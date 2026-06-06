@@ -98,7 +98,7 @@ export function AchievementsSection() {
                   <div className="rounded-xl border border-accent-500/20 bg-accent-500/[0.04] p-3">
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] font-medium uppercase tracking-wider text-accent-400">
+                        <span className="text-[10px] font-medium uppercase tracking-wider text-theme-gold">
                           🏆 الطالب المميز
                         </span>
                         <p className="mt-1 text-sm font-semibold text-theme">{featured.studentName}</p>

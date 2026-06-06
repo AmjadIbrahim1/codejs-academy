@@ -28,7 +28,7 @@ export function CustomerReviewsSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-16 text-center fade-in-up">
-          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-accent-400">
+          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-theme-gold">
             آراء عملائنا
           </span>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-5xl">

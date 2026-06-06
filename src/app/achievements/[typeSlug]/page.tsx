@@ -113,7 +113,7 @@ export default function AchievementCategoryPage() {
                 <div className="rounded-2xl border border-accent-500/20 bg-gradient-to-br from-accent-500/[0.06] to-brand-500/[0.04] p-6">
                   <div className="mb-3 flex items-center gap-2">
                     <span className="text-lg">🏆</span>
-                    <span className="rounded-full bg-accent-500/15 px-3 py-0.5 text-xs font-semibold text-accent-400">
+                    <span className="rounded-full bg-accent-500/15 px-3 py-0.5 text-xs font-semibold text-theme-gold">
                       الطالب المميز
                     </span>
                   </div>

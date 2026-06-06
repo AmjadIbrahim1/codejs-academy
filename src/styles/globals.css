@@ -86,6 +86,7 @@
   --theme-badge-border: rgba(51, 153, 51, 0.2);
   --theme-badge-text: #66bb6a;
   --theme-highlight-bg: rgba(51, 153, 51, 0.05);
+  --color-theme-gold: #d4a800;
 }
 
 /* Light Theme */
@@ -133,6 +134,7 @@
   --theme-badge-border: rgba(51, 153, 51, 0.2);
   --theme-badge-text: #2e7d32;
   --theme-highlight-bg: rgba(51, 153, 51, 0.04);
+  --color-theme-gold: #a09534;
 }
 
 /* Neon Theme */
@@ -183,6 +185,7 @@
   --theme-surface: rgba(5, 10, 5, 0.95);
   --theme-accent-from: #33ff33;
   --theme-accent-to: #f7df1e;
+  --color-theme-gold: #fff59d;
 }
 
 @layer base {
@@ -228,6 +231,7 @@
   .text-theme-badge { color: var(--theme-badge-text); }
   .text-theme-btn-primary { color: var(--theme-btn-primary-text); }
   .text-theme-btn-secondary { color: var(--theme-btn-secondary-text); }
+  .text-theme-gold { color: var(--color-theme-gold); }
 
   /* ───── Theme-aware borders ───── */
   .border-theme { border-color: var(--theme-border); }

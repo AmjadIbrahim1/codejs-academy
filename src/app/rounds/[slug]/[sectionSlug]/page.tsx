@@ -100,7 +100,7 @@ export default function SectionGalleryPage({
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="mb-4 text-6xl opacity-30">{sectionIcon}</div>
               <p className="text-lg text-theme-tertiary">لا توجد صور لهذا القسم بعد</p>
-              <p className="mt-1 text-sm text-theme-tertiary">قريباً</p>
+              <p className="mt-1 text-sm text-theme-gold">قريباً</p>
             </div>
           )}
 

@@ -7,7 +7,7 @@ export function PricingSection() {
     <section id="pricing" className="border-t border-theme divider-theme py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center fade-in-up">
-          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-accent-400">
+          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-theme-gold">
             عرض لفترة محدودة
           </span>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
@@ -21,7 +21,7 @@ export function PricingSection() {
           <div className="relative overflow-hidden rounded-2xl border border-brand-500/20 bg-gradient-to-br from-brand-500/[0.08] to-[var(--theme-bg-secondary)] p-8">
             <div className="absolute -top-10 -right-10 h-24 w-24 rounded-full bg-brand-500/20 blur-[60px]" />
             <div className="relative">
-              <div className="mb-2 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-accent-400">
+              <div className="mb-2 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-theme-gold">
                 45% خصم
               </div>
               <h3 className="mb-1 text-lg font-bold text-theme">داخل مصر</h3>
@@ -68,12 +68,12 @@ export function PricingSection() {
           <div className="relative overflow-hidden rounded-2xl border border-accent-500/20 bg-gradient-to-br from-accent-500/[0.08] to-[var(--theme-bg-secondary)] p-8">
             <div className="absolute -top-10 -right-10 h-24 w-24 rounded-full bg-accent-500/20 blur-[60px]" />
             <div className="relative">
-              <div className="mb-2 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-accent-400">
+              <div className="mb-2 inline-block rounded-full bg-accent-500/10 px-3 py-1 text-xs font-semibold text-theme-gold">
                 45% خصم
               </div>
               <h3 className="mb-1 text-lg font-bold text-theme">خارج مصر</h3>
               <div className="mb-4 flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-accent-400">$30</span>
+                <span className="text-3xl font-bold text-theme-gold">$30</span>
                 <span className="text-sm text-theme-tertiary line-through">$55</span>
               </div>
               <ul className="mb-6 space-y-2 text-sm text-theme-secondary">
@@ -122,7 +122,7 @@ export function PricingSection() {
               <span className="font-semibold">انستا باي</span>
             </span>
             <span className="flex items-center gap-2 text-accent-300">
-              <span className="font-semibold">كاش واليت</span>
+              <span className="font-semibold text-theme-gold">كاش واليت</span>
             </span>
             <span className="flex items-center gap-2">
               <span className="font-semibold text-theme">تليفون:</span> 01030615045

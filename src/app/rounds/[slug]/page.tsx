@@ -183,7 +183,7 @@ export default function RoundDetailPage({
                   <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-amber-400 opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-amber-500" />
                 </span>
-                <span className="text-sm font-semibold text-amber-400">
+                <span className="text-sm font-semibold text-theme-gold">
                   عرض لفترة محدودة
                 </span>
               </div>

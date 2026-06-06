@@ -51,7 +51,7 @@ export function ContactSection() {
     <section id="contact" className="border-t border-theme divider-theme py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-16 text-center fade-in-up">
-          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-accent-400">
+          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-theme-gold">
             ابقي على تواصل
           </span>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl">

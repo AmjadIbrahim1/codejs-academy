@@ -92,8 +92,8 @@ export function Navbar() {
                 {session.user.role === "admin" && (
                   <Link
                     href="/admin"
-                    className="rounded-lg bg-accent-500/10 px-3 py-1.5 text-sm font-medium text-accent-400 transition-all duration-300 hover:bg-accent-500/20 hover:shadow-[0_0_20px_rgba(247,223,30,0.15)] active:scale-95"
-                  >
+                    className="rounded-lg bg-accent-500/10 px-3 py-1.5 text-sm font-medium text-theme-gold transition-all duration-300 hover:bg-accent-500/20 hover:shadow-[0_0_20px_rgba(247,223,30,0.15)] active:scale-95"
+                    >
                     لوحة التحكم
                   </Link>
                 )}
