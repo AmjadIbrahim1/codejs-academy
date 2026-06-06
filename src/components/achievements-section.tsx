@@ -6,58 +6,55 @@ import { api } from "@/trpc/react";
 const categories = [
   {
     title: "أوائل الاختبارات",
-    slug: "quiz-champions",
+    slug: "quiz_champion",
     description: "أعلى الطلاب درجات في اختبارات البرمجة الأسبوعية",
     icon: "📊",
-    type: "quiz_champion",
   },
   {
     title: "الأوائل في المهام",
-    slug: "task-champions",
+    slug: "task_champion",
     description: "أداء متميز في مهام البرمجة الأسبوعية",
     icon: "💻",
-    type: "task_champion",
   },
   {
     title: "الأفضل في المحاضرات",
-    slug: "session-stars",
+    slug: "session_star",
     description: "طلاب شاركوا وأجابوا بنشاط خلال المحاضرات",
     icon: "🎤",
-    type: "session_star",
   },
   {
     title: "أفضل المساهمين",
-    slug: "community-contributors",
+    slug: "best_contributor",
     description: "أعضاء المجتمع اللي ساعدوا غيرهم أكتر",
     icon: "🤝",
-    type: "best_contributor",
   },
   {
     title: "مقابلات متميزة",
-    slug: "distinguished-interviews",
+    slug: "distinguished_interview",
     description: "طلاب أظهروا مهارات مقابلات استثنائية",
     icon: "🎯",
-    type: "distinguished_interview",
   },
   {
     title: "أبطال الامتحانات الأسبوعية",
-    slug: "exam-performers",
+    slug: "exam_performer",
     description: "أعلى الدرجات في الامتحانات الشاملة الأسبوعية",
     icon: "🏅",
-    type: "exam_performer",
   },
 ];
 
 export function AchievementsSection() {
-  const { data: currentRound } = api.round.getCurrent.useQuery();
   const { data: achievements } = api.achievement.getAll.useQuery();
-  const roundSlug = currentRound?.slug ?? "";
 
-  // Group achievements by type
+  // Group achievements by type and find featured ones
   const achievementsByType = new Map<string, typeof achievements>();
+  const featuredByType = new Map<string, NonNullable<typeof achievements>[number]>();
+
   for (const ach of achievements ?? []) {
     if (!achievementsByType.has(ach.type)) achievementsByType.set(ach.type, []);
     achievementsByType.get(ach.type)!.push(ach);
+    if (ach.featured && !featuredByType.has(ach.type)) {
+      featuredByType.set(ach.type, ach);
+    }
   }
 
   return (
@@ -79,45 +76,81 @@ export function AchievementsSection() {
 
         <div className="stagger-children grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat) => {
-            const catAchievements = achievementsByType.get(cat.type) ?? [];
+            const featured = featuredByType.get(cat.slug);
+            const totalCount = achievementsByType.get(cat.slug)?.length ?? 0;
+
             return (
-              <div
+              <Link
                 key={cat.title}
-                className="card-hover card-theme rounded-2xl p-6"
+                href={`/achievements/${cat.slug}`}
+                className="card-hover card-theme rounded-2xl p-6 group block"
               >
                 <div className="mb-3 flex items-center gap-3">
                   <span className="text-2xl">{cat.icon}</span>
-                  <div>
+                  <div className="min-w-0 flex-1">
                     <h3 className="text-sm font-semibold text-theme">{cat.title}</h3>
-                    <p className="text-xs text-theme-tertiary">{cat.description}</p>
+                    <p className="text-xs text-theme-tertiary truncate">{cat.description}</p>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {catAchievements.length > 0 ? (
-                    catAchievements.map((ach) => (
-                      <span
-                        key={ach.id}
-                        className="rounded-lg border border-theme-card bg-theme-card px-2.5 py-1 text-xs text-theme-secondary"
-                      >
-                        {ach.studentName}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="text-xs text-theme-tertiary">لا يوجد طلاب حتى الآن</span>
-                  )}
-                </div>
-                {roundSlug && (
-                  <Link
-                    href={`/rounds/${roundSlug}/${cat.slug}`}
-                    className="mt-3 inline-flex items-center gap-1 text-xs text-brand-400 transition hover:text-brand-300"
-                  >
-                    عرض الصور
-                    <svg className="h-3 w-3 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </Link>
+
+                {/* Featured student */}
+                {featured ? (
+                  <div className="rounded-xl border border-accent-500/20 bg-accent-500/[0.04] p-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-medium uppercase tracking-wider text-accent-400">
+                          🏆 الطالب المميز
+                        </span>
+                        <p className="mt-1 text-sm font-semibold text-theme">{featured.studentName}</p>
+                        {featured.link ? (
+                          <a
+                            href={featured.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="mt-1 inline-flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 hover:underline"
+                          >
+                            LinkedIn
+                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        ) : (
+                          <p className="mt-1 text-xs text-theme-tertiary">لا يوجد رابط</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-dashed border-theme-card bg-theme-card p-3">
+                    <p className="text-center text-xs text-theme-tertiary">
+                      {totalCount > 0
+                        ? "لم يتم تعيين طالب مميز بعد"
+                        : "لا يوجد طلاب حتى الآن"}
+                    </p>
+                  </div>
                 )}
-              </div>
+
+                {/* View all button */}
+                {totalCount > 0 && (
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-xs text-theme-tertiary">
+                      {totalCount} طالب{totalCount !== 1 ? "ًا" : ""}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-400 transition group-hover:text-brand-300">
+                      عرض الكل
+                      <svg className="h-3 w-3 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </span>
+                  </div>
+                )}
+                {totalCount === 0 && (
+                  <div className="mt-3">
+                    <span className="text-xs text-theme-tertiary">لم يتم إضافة طلاب بعد</span>
+                  </div>
+                )}
+              </Link>
             );
           })}
         </div>

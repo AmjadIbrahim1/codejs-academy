@@ -45,12 +45,10 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-4">
           {/* Brand */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 font-bold text-white text-sm">
-                JS
-              </div>
+            <Link href="/" className="flex items-center gap-2 transition-transform hover:scale-105">
+              <img src="/logo.png" alt="Code JS Academy" className="h-8 w-auto drop-shadow-[0_0_8px_rgba(51,153,51,0.3)]" />
               <span className="text-lg font-bold text-theme">
-                Code <span className="text-brand-400">JS</span> Academy
+                Code <span className="text-accent-400">JS</span> <span className="text-brand-400">Academy</span>
               </span>
             </Link>
             <p className="text-sm leading-relaxed text-theme-secondary">

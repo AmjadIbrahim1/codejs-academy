@@ -19031,8 +19031,7 @@ export namespace Prisma {
     id: string | null
     studentName: string | null
     photoUrl: string | null
-    title: string | null
-    description: string | null
+    link: string | null
     date: Date | null
     type: string | null
     featured: boolean | null
@@ -19043,8 +19042,7 @@ export namespace Prisma {
     id: string | null
     studentName: string | null
     photoUrl: string | null
-    title: string | null
-    description: string | null
+    link: string | null
     date: Date | null
     type: string | null
     featured: boolean | null
@@ -19055,8 +19053,7 @@ export namespace Prisma {
     id: number
     studentName: number
     photoUrl: number
-    title: number
-    description: number
+    link: number
     date: number
     type: number
     featured: number
@@ -19069,8 +19066,7 @@ export namespace Prisma {
     id?: true
     studentName?: true
     photoUrl?: true
-    title?: true
-    description?: true
+    link?: true
     date?: true
     type?: true
     featured?: true
@@ -19081,8 +19077,7 @@ export namespace Prisma {
     id?: true
     studentName?: true
     photoUrl?: true
-    title?: true
-    description?: true
+    link?: true
     date?: true
     type?: true
     featured?: true
@@ -19093,8 +19088,7 @@ export namespace Prisma {
     id?: true
     studentName?: true
     photoUrl?: true
-    title?: true
-    description?: true
+    link?: true
     date?: true
     type?: true
     featured?: true
@@ -19178,8 +19172,7 @@ export namespace Prisma {
     id: string
     studentName: string
     photoUrl: string | null
-    title: string
-    description: string | null
+    link: string | null
     date: Date
     type: string
     featured: boolean
@@ -19207,8 +19200,7 @@ export namespace Prisma {
     id?: boolean
     studentName?: boolean
     photoUrl?: boolean
-    title?: boolean
-    description?: boolean
+    link?: boolean
     date?: boolean
     type?: boolean
     featured?: boolean
@@ -19219,8 +19211,7 @@ export namespace Prisma {
     id?: boolean
     studentName?: boolean
     photoUrl?: boolean
-    title?: boolean
-    description?: boolean
+    link?: boolean
     date?: boolean
     type?: boolean
     featured?: boolean
@@ -19231,8 +19222,7 @@ export namespace Prisma {
     id?: boolean
     studentName?: boolean
     photoUrl?: boolean
-    title?: boolean
-    description?: boolean
+    link?: boolean
     date?: boolean
     type?: boolean
     featured?: boolean
@@ -19243,15 +19233,14 @@ export namespace Prisma {
     id?: boolean
     studentName?: boolean
     photoUrl?: boolean
-    title?: boolean
-    description?: boolean
+    link?: boolean
     date?: boolean
     type?: boolean
     featured?: boolean
     createdAt?: boolean
   }
 
-  export type AchievementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentName" | "photoUrl" | "title" | "description" | "date" | "type" | "featured" | "createdAt", ExtArgs["result"]["achievement"]>
+  export type AchievementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "studentName" | "photoUrl" | "link" | "date" | "type" | "featured" | "createdAt", ExtArgs["result"]["achievement"]>
 
   export type $AchievementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Achievement"
@@ -19260,8 +19249,7 @@ export namespace Prisma {
       id: string
       studentName: string
       photoUrl: string | null
-      title: string
-      description: string | null
+      link: string | null
       date: Date
       type: string
       featured: boolean
@@ -19692,8 +19680,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Achievement", 'String'>
     readonly studentName: FieldRef<"Achievement", 'String'>
     readonly photoUrl: FieldRef<"Achievement", 'String'>
-    readonly title: FieldRef<"Achievement", 'String'>
-    readonly description: FieldRef<"Achievement", 'String'>
+    readonly link: FieldRef<"Achievement", 'String'>
     readonly date: FieldRef<"Achievement", 'DateTime'>
     readonly type: FieldRef<"Achievement", 'String'>
     readonly featured: FieldRef<"Achievement", 'Boolean'>
@@ -24654,8 +24641,7 @@ export namespace Prisma {
     id: 'id',
     studentName: 'studentName',
     photoUrl: 'photoUrl',
-    title: 'title',
-    description: 'description',
+    link: 'link',
     date: 'date',
     type: 'type',
     featured: 'featured',
@@ -25849,8 +25835,7 @@ export namespace Prisma {
     id?: StringFilter<"Achievement"> | string
     studentName?: StringFilter<"Achievement"> | string
     photoUrl?: StringNullableFilter<"Achievement"> | string | null
-    title?: StringFilter<"Achievement"> | string
-    description?: StringNullableFilter<"Achievement"> | string | null
+    link?: StringNullableFilter<"Achievement"> | string | null
     date?: DateTimeFilter<"Achievement"> | Date | string
     type?: StringFilter<"Achievement"> | string
     featured?: BoolFilter<"Achievement"> | boolean
@@ -25861,8 +25846,7 @@ export namespace Prisma {
     id?: SortOrder
     studentName?: SortOrder
     photoUrl?: SortOrderInput | SortOrder
-    title?: SortOrder
-    description?: SortOrderInput | SortOrder
+    link?: SortOrderInput | SortOrder
     date?: SortOrder
     type?: SortOrder
     featured?: SortOrder
@@ -25876,8 +25860,7 @@ export namespace Prisma {
     NOT?: AchievementWhereInput | AchievementWhereInput[]
     studentName?: StringFilter<"Achievement"> | string
     photoUrl?: StringNullableFilter<"Achievement"> | string | null
-    title?: StringFilter<"Achievement"> | string
-    description?: StringNullableFilter<"Achievement"> | string | null
+    link?: StringNullableFilter<"Achievement"> | string | null
     date?: DateTimeFilter<"Achievement"> | Date | string
     type?: StringFilter<"Achievement"> | string
     featured?: BoolFilter<"Achievement"> | boolean
@@ -25888,8 +25871,7 @@ export namespace Prisma {
     id?: SortOrder
     studentName?: SortOrder
     photoUrl?: SortOrderInput | SortOrder
-    title?: SortOrder
-    description?: SortOrderInput | SortOrder
+    link?: SortOrderInput | SortOrder
     date?: SortOrder
     type?: SortOrder
     featured?: SortOrder
@@ -25906,8 +25888,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Achievement"> | string
     studentName?: StringWithAggregatesFilter<"Achievement"> | string
     photoUrl?: StringNullableWithAggregatesFilter<"Achievement"> | string | null
-    title?: StringWithAggregatesFilter<"Achievement"> | string
-    description?: StringNullableWithAggregatesFilter<"Achievement"> | string | null
+    link?: StringNullableWithAggregatesFilter<"Achievement"> | string | null
     date?: DateTimeWithAggregatesFilter<"Achievement"> | Date | string
     type?: StringWithAggregatesFilter<"Achievement"> | string
     featured?: BoolWithAggregatesFilter<"Achievement"> | boolean
@@ -27321,8 +27302,7 @@ export namespace Prisma {
     id?: string
     studentName: string
     photoUrl?: string | null
-    title: string
-    description?: string | null
+    link?: string | null
     date?: Date | string
     type: string
     featured?: boolean
@@ -27333,8 +27313,7 @@ export namespace Prisma {
     id?: string
     studentName: string
     photoUrl?: string | null
-    title: string
-    description?: string | null
+    link?: string | null
     date?: Date | string
     type: string
     featured?: boolean
@@ -27345,8 +27324,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     type?: StringFieldUpdateOperationsInput | string
     featured?: BoolFieldUpdateOperationsInput | boolean
@@ -27357,8 +27335,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     type?: StringFieldUpdateOperationsInput | string
     featured?: BoolFieldUpdateOperationsInput | boolean
@@ -27369,8 +27346,7 @@ export namespace Prisma {
     id?: string
     studentName: string
     photoUrl?: string | null
-    title: string
-    description?: string | null
+    link?: string | null
     date?: Date | string
     type: string
     featured?: boolean
@@ -27381,8 +27357,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     type?: StringFieldUpdateOperationsInput | string
     featured?: BoolFieldUpdateOperationsInput | boolean
@@ -27393,8 +27368,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     studentName?: StringFieldUpdateOperationsInput | string
     photoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     type?: StringFieldUpdateOperationsInput | string
     featured?: BoolFieldUpdateOperationsInput | boolean
@@ -28550,8 +28524,7 @@ export namespace Prisma {
     id?: SortOrder
     studentName?: SortOrder
     photoUrl?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    link?: SortOrder
     date?: SortOrder
     type?: SortOrder
     featured?: SortOrder
@@ -28562,8 +28535,7 @@ export namespace Prisma {
     id?: SortOrder
     studentName?: SortOrder
     photoUrl?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    link?: SortOrder
     date?: SortOrder
     type?: SortOrder
     featured?: SortOrder
@@ -28574,8 +28546,7 @@ export namespace Prisma {
     id?: SortOrder
     studentName?: SortOrder
     photoUrl?: SortOrder
-    title?: SortOrder
-    description?: SortOrder
+    link?: SortOrder
     date?: SortOrder
     type?: SortOrder
     featured?: SortOrder

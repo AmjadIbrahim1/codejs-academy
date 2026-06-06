@@ -192,18 +192,15 @@ model SocialLink {
     url  String
     icon String
     order Int @default(0)
-}
-
-model Achievement {
-    id          String   @id @default(cuid())
-    studentName String
-    photoUrl    String?
-    title       String
-    description String?
-    date        DateTime @default(now())
-    type        String   // success_story, weekly_winner, community_win, interview_highlight, best_contributor
-    featured    Boolean  @default(false)
-    createdAt   DateTime @default(now())
+}model Achievement {
+  id          String   @id @default(cuid())
+  studentName String
+  photoUrl    String?
+  link        String?
+  date        DateTime @default(now())
+  type        String   // quiz_champion, task_champion, session_star, best_contributor, distinguished_interview, exam_performer
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }
 
 // ─── Course Sections (for image-based achievement categories) ───

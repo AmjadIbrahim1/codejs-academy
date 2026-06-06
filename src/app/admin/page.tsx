@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { AdminCourseSections } from "@/components/admin-course-sections";
 
-type Tab = "services" | "rounds" | "testimonials" | "faq" | "curriculum" | "announcements" | "certificates" | "social" | "users" | "courseSections" | "customerReviews" | "studentReviews";
+type Tab = "services" | "rounds" | "testimonials" | "faq" | "curriculum" | "announcements" | "certificates" | "social" | "users" | "courseSections" | "customerReviews" | "studentReviews" | "achievements";
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<Tab>("services");
+  const [activeTab, setActiveTab] = useState<Tab>("achievements");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -40,6 +40,7 @@ export default function AdminPage() {
     { id: "certificates" as Tab, label: "الشهادات" },
     { id: "social" as Tab, label: "روابط التواصل" },
     { id: "users" as Tab, label: "المستخدمين" },
+    { id: "achievements" as Tab, label: "إنجازات الطلاب" },
     { id: "courseSections" as Tab, label: "أقسام التكريم" },
     { id: "customerReviews" as Tab, label: "صور العملاء" },
     { id: "studentReviews" as Tab, label: "صور الطلاب" },
@@ -83,6 +84,7 @@ export default function AdminPage() {
           {activeTab === "certificates" && <CertificatesManager />}
           {activeTab === "social" && <SocialManager />}
           {activeTab === "users" && <UsersManager />}
+          {activeTab === "achievements" && <AchievementsManager />}
           {activeTab === "courseSections" && <AdminCourseSections />}
           {activeTab === "customerReviews" && <ReviewImagesManager type="customer" title="صور العملاء" />}
           {activeTab === "studentReviews" && <ReviewImagesManager type="student" title="صور الطلاب" />}
@@ -675,6 +677,253 @@ function SocialManager() {
             </button>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Achievements Manager ───
+
+const ACHIEVEMENT_CATEGORIES = [
+  { value: "quiz_champion", label: "أوائل الاختبارات", icon: "📊" },
+  { value: "task_champion", label: "الأوائل في المهام", icon: "💻" },
+  { value: "session_star", label: "الأفضل في المحاضرات", icon: "🎤" },
+  { value: "best_contributor", label: "أفضل المساهمين", icon: "🤝" },
+  { value: "distinguished_interview", label: "مقابلات متميزة", icon: "🎯" },
+  { value: "exam_performer", label: "أبطال الامتحانات الأسبوعية", icon: "🏅" },
+];
+
+function AchievementsManager() {
+  const { data: achievements, refetch } = api.achievement.getAll.useQuery();
+  const createAchievement = api.achievement.create.useMutation({ onSuccess: () => refetch() });
+  const updateAchievement = api.achievement.update.useMutation({ onSuccess: () => refetch() });
+  const deleteAchievement = api.achievement.delete.useMutation({ onSuccess: () => refetch() });
+  const setFeatured = api.achievement.setFeatured.useMutation({ onSuccess: () => refetch() });
+
+  const [form, setForm] = useState({ studentName: "", link: "", type: "quiz_champion", featured: false });
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [filterType, setFilterType] = useState<string>("all");
+
+  const filteredAchievements = filterType === "all"
+    ? achievements
+    : achievements?.filter((a) => a.type === filterType);
+
+  const handleSave = () => {
+    if (!form.studentName.trim()) {
+      alert("اسم الطالب مطلوب");
+      return;
+    }
+
+    if (editingId) {
+      updateAchievement.mutate({
+        id: editingId,
+        studentName: form.studentName,
+        link: form.link || undefined,
+        type: form.type,
+        featured: form.featured,
+      });
+    } else {
+      createAchievement.mutate({
+        studentName: form.studentName,
+        link: form.link || undefined,
+        type: form.type,
+        featured: form.featured,
+      });
+    }
+
+    resetForm();
+  };
+
+  const startEditing = (ach: NonNullable<typeof achievements>[number]) => {
+    setEditingId(ach.id);
+    setForm({
+      studentName: ach.studentName,
+      link: ach.link ?? "",
+      type: ach.type,
+      featured: ach.featured,
+    });
+  };
+
+  const resetForm = () => {
+    setForm({ studentName: "", link: "", type: "quiz_champion", featured: false });
+    setEditingId(null);
+  };
+
+  const handleDelete = (id: string) => {
+    if (window.confirm("هل أنت متأكد من حذف هذا الإنجاز؟")) {
+      deleteAchievement.mutate({ id });
+      if (editingId === id) resetForm();
+    }
+  };
+
+  const handleToggleFeatured = (ach: NonNullable<typeof achievements>[number]) => {
+    if (ach.featured) {
+      // Unfeature
+      updateAchievement.mutate({ id: ach.id, featured: false });
+    } else {
+      // Set as featured (will auto-unfeature others in same type)
+      setFeatured.mutate({ id: ach.id, type: ach.type });
+    }
+  };
+
+  const getCategoryLabel = (type: string) => {
+    return ACHIEVEMENT_CATEGORIES.find((c) => c.value === type);
+  };
+
+  return (
+    <div>
+      <h2 className="mb-4 text-lg font-bold text-theme">إنجازات الطلاب</h2>
+
+      {/* Add / Edit Form */}
+      <div className="mb-6 grid gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:grid-cols-4">
+        <select
+          value={form.type}
+          onChange={(e) => setForm({ ...form, type: e.target.value })}
+          className="rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme"
+        >
+          {ACHIEVEMENT_CATEGORIES.map((cat) => (
+            <option key={cat.value} value={cat.value}>
+              {cat.icon} {cat.label}
+            </option>
+          ))}
+        </select>
+        <input
+          placeholder="اسم الطالب *"
+          value={form.studentName}
+          onChange={(e) => setForm({ ...form, studentName: e.target.value })}
+          className="rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme placeholder:text-theme-tertiary"
+        />
+        <input
+          placeholder="رابط LinkedIn (اختياري)"
+          value={form.link}
+          onChange={(e) => setForm({ ...form, link: e.target.value })}
+          className="rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme placeholder:text-theme-tertiary"
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={handleSave}
+            className="flex-1 rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600"
+          >
+            {editingId ? "حفظ التعديلات" : "إضافة إنجاز"}
+          </button>
+          {editingId && (
+            <button
+              onClick={resetForm}
+              className="rounded-lg bg-white/10 px-4 py-2 text-sm text-theme-secondary hover:bg-white/20"
+            >
+              إلغاء
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Featured toggle and form extras */}
+      <div className="mb-6 flex items-center gap-4 rounded-xl border border-brand-500/20 bg-brand-500/5 p-3">
+        <label className="flex cursor-pointer items-center gap-2 text-sm text-theme">
+          <input
+            type="checkbox"
+            checked={form.featured}
+            onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+            className="h-4 w-4 rounded border-white/20 bg-white/10 text-brand-500 focus:ring-brand-500"
+          />
+          <span>طالب مميز (يظهر في الصفحة الرئيسية)</span>
+        </label>
+        <span className="text-xs text-theme-tertiary">
+          ملاحظة: يمكن لطالب مميز واحد فقط لكل تصنيف
+        </span>
+      </div>
+
+      {/* Filter */}
+      <div className="mb-4 flex items-center gap-2">
+        <span className="text-xs text-theme-tertiary">تصفية حسب التصنيف:</span>
+        <select
+          value={filterType}
+          onChange={(e) => setFilterType(e.target.value)}
+          className="rounded-lg border border-theme-input bg-theme-input px-3 py-1.5 text-xs text-theme"
+        >
+          <option value="all">الكل</option>
+          {ACHIEVEMENT_CATEGORIES.map((cat) => (
+            <option key={cat.value} value={cat.value}>
+              {cat.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* List */}
+      <div className="space-y-2">
+        {filteredAchievements?.length === 0 && (
+          <p className="py-8 text-center text-sm text-theme-tertiary">لا توجد إنجازات بعد. أضف أول إنجاز!</p>
+        )}
+        {filteredAchievements?.map((ach) => {
+          const cat = getCategoryLabel(ach.type);
+          return (
+            <div
+              key={ach.id}
+              className={`flex items-center justify-between rounded-lg border px-4 py-3 transition cursor-pointer ${
+                editingId === ach.id
+                  ? "border-brand-500/40 bg-brand-500/10"
+                  : "border-white/10 bg-white/[0.02] hover:border-white/20"
+              }`}
+              onClick={() => startEditing(ach)}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-lg flex-shrink-0">{cat?.icon ?? "🏆"}</span>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 text-sm font-medium text-theme">
+                    {ach.studentName}
+                    {ach.featured && (
+                      <span className="rounded-full bg-accent-500/15 px-2 py-0.5 text-[10px] font-semibold text-accent-400">
+                        مميز
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-dark-500">
+                    <span>{cat?.label ?? ach.type}</span>
+                    {ach.link && (
+                      <>
+                        <span>•</span>
+                        <a
+                          href={ach.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="text-brand-400 hover:text-brand-300 hover:underline"
+                        >
+                          LinkedIn
+                        </a>
+                      </>
+                    )}
+                    {!ach.link && (
+                      <>
+                        <span>•</span>
+                        <span className="text-theme-tertiary">لا يوجد رابط</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
+                <button
+                  onClick={() => handleToggleFeatured(ach)}
+                  className={`rounded-lg px-3 py-1 text-xs transition ${
+                    ach.featured
+                      ? "bg-accent-500/15 text-accent-400 hover:bg-accent-500/25"
+                      : "bg-white/5 text-dark-400 hover:bg-white/10"
+                  }`}
+                >
+                  {ach.featured ? "إلغاء التميز" : "تمييز"}
+                </button>
+                <button
+                  onClick={() => handleDelete(ach.id)}
+                  className="rounded-lg bg-red-500/10 px-3 py-1 text-xs text-red-400 hover:bg-red-500/20"
+                >
+                  حذف
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
