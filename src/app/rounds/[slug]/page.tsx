@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import { api } from "@/trpc/react";
 
@@ -18,9 +19,9 @@ const SECTION_HIGHLIGHT_MAP: Record<string, string[]> = {
 export default function RoundDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = use(params);
 
   const { data: round, isLoading } = api.round.getBySlug.useQuery({ slug });
   const { data: sections } = api.courseSection.getByRoundSlug.useQuery({ roundSlug: slug });
