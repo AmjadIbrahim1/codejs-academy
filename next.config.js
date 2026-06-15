@@ -9,7 +9,7 @@ const config = {
 
   // ─── Security headers are now handled by middleware.ts ───
 
-  
+
   experimental: {
     optimizePackageImports: [
       "@trpc/react-query",
@@ -17,6 +17,7 @@ const config = {
     ],
   },
 
+  
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 1080, 1920],
