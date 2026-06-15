@@ -9,6 +9,7 @@ const config = {
 
   // ─── Security headers are now handled by middleware.ts ───
 
+  
   experimental: {
     optimizePackageImports: [
       "@trpc/react-query",
