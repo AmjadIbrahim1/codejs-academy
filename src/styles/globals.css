@@ -337,10 +337,55 @@
   }
 
   /* ───── Marquee ───── */
+  .marquee-outer {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  .marquee-outer::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 120px;
+    z-index: 20;
+    pointer-events: none;
+    background: linear-gradient(to left, var(--theme-bg) 0%, transparent 100%);
+  }
+  .marquee-outer::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 120px;
+    z-index: 20;
+    pointer-events: none;
+    background: linear-gradient(to right, var(--theme-bg) 0%, transparent 100%);
+  }
   .marquee { animation: marquee 30s linear infinite; }
+  .marquee:hover { animation-play-state: paused; }
   @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .marquee-reverse { animation: marquee-reverse 30s linear infinite; }
+  .marquee-reverse:hover { animation-play-state: paused; }
   @keyframes marquee-reverse { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+  /* ───── Review Marquee Pills ───── */
+  .review-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  .review-pill:hover {
+    transform: translateY(-4px) scale(1.02);
+  }
+  .review-pill img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
 
   /* ───── Scroll-reveal animations ───── */
   .fade-in-up { animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
@@ -715,4 +760,5 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .marquee, .marquee-reverse { animation: none !important; }
 }

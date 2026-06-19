@@ -24,7 +24,7 @@ export function StudentReviewsSection() {
   }
 
   return (
-    <section className="border-t border-theme divider-theme py-24">
+    <section className="border-t border-theme divider-theme py-24 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-16 text-center fade-in-up">
@@ -38,31 +38,35 @@ export function StudentReviewsSection() {
             شوف إيه اللي بيقوله طلابنا عن تجربتهم مع Code JS Academy
           </p>
         </div>
+      </div>
 
-        {/* Masonry-like grid */}
-        <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
-          {images.map((img, index) => (
-            <div
-              key={img.id}
-              className="group mb-6 cursor-pointer break-inside-avoid"
-              style={{ animationDelay: `${index * 0.1}s` }}
-              onClick={() => setSelectedImage(img.imageUrl)}
-            >
-              <div className="relative overflow-hidden rounded-2xl border border-theme-card bg-theme-card transition-all duration-500 hover:shadow-[0_0_30px_rgba(51,153,51,0.15)]">
-                <img
-                  src={img.imageUrl}
-                  alt={img.caption ?? `رأي الطالب ${index + 1}`}
-                  className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
+      {/* Marquee section — no padding to allow full-bleed scroll */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="marquee-outer relative overflow-hidden">
+          <div className="marquee flex w-max gap-5">
+            {[...images, ...images].map((img, i) => (
+              <div
+                key={`${img.id}-${i}`}
+                className="review-pill group cursor-pointer"
+                onClick={() => setSelectedImage(img.imageUrl)}
+              >
+                <div className="relative h-44 w-64 overflow-hidden rounded-2xl border border-theme-card bg-theme-card shadow-lg transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(51,153,51,0.2)] sm:h-56 sm:w-80">
+                  <img
+                    src={img.imageUrl}
+                    alt={img.caption ?? `رأي الطالب`}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                </div>
                 {img.caption && (
-                  <div className="absolute inset-x-0 bottom-0 translate-y-full bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 transition-transform duration-300 group-hover:translate-y-0">
-                    <p className="text-sm text-white">{img.caption}</p>
-                  </div>
+                  <p className="mt-2.5 max-w-64 truncate text-center text-xs text-theme-secondary font-medium sm:max-w-80">
+                    {img.caption}
+                  </p>
                 )}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 

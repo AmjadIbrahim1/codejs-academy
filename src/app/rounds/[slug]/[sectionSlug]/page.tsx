@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import { api } from "@/trpc/react";
 
@@ -19,6 +19,7 @@ export default function SectionGalleryPage({
   params: Promise<{ slug: string; sectionSlug: string }>;
 }) {
   const { slug, sectionSlug } = use(params);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const { data: round } = api.round.getBySlug.useQuery({ slug });
   const { data: section, isLoading } = api.courseSection.getBySlug.useQuery({
@@ -113,7 +114,10 @@ export default function SectionGalleryPage({
                   className="mb-4 break-inside-avoid fade-in-up"
                   style={{ animationDelay: `${i * 0.05}s` }}
                 >
-                  <div className="group relative overflow-hidden rounded-2xl border border-theme-card bg-theme-card">
+                  <div
+                    className="group relative overflow-hidden rounded-2xl border border-theme-card bg-theme-card cursor-pointer"
+                    onClick={() => setSelectedImage(img.imageUrl)}
+                  >
                     <img
                       src={img.imageUrl}
                       alt={img.caption ?? `صورة ${i + 1}`}
@@ -124,12 +128,33 @@ export default function SectionGalleryPage({
                         <p className="text-sm text-white">{img.caption}</p>
                       </div>
                     )}
-                  </div>                  </div>
+                  </div>
+                </div>
               ))}
             </div>
           )}
         </div>
       </section>
+
+      {/* Lightbox */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-sm transition-opacity"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/20"
+          >
+            ✕
+          </button>
+          <img
+            src={selectedImage}
+            alt="صورة مكبرة"
+            className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
+          />
+        </div>
+      )}
     </div>
   );
 }
