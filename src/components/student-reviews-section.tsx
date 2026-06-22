@@ -4,15 +4,17 @@ import { api } from "@/trpc/react";
 import { useState } from "react";
 
 export function StudentReviewsSection() {
-  const { data: images, isLoading } = api.reviewImage.getByType.useQuery({ type: "student" });
+  const { data: images, isLoading } = api.reviewImage.getByType.useQuery({
+    type: "student",
+  });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   if (isLoading) {
     return (
-      <section className="border-t border-theme divider-theme py-24">
+      <section className="border-theme divider-theme border-t py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" />
+            <div className="border-brand-500 h-8 w-8 animate-spin rounded-full border-2 border-t-transparent" />
           </div>
         </div>
       </section>
@@ -24,17 +26,17 @@ export function StudentReviewsSection() {
   }
 
   return (
-    <section className="border-t border-theme divider-theme py-24 overflow-hidden">
+    <section className="border-theme divider-theme overflow-hidden border-t py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-16 text-center fade-in-up">
-          <span className="inline-block rounded-full border border-accent-500/20 bg-accent-500/10 px-4 py-1.5 text-sm text-theme-gold">
+        <div className="fade-in-up mb-16 text-center">
+          <span className="border-accent-500/20 bg-accent-500/10 text-theme-gold inline-block rounded-full border px-4 py-1.5 text-sm">
             آراء الطلاب
           </span>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
             آراء الطلاب
           </h2>
-          <p className="mx-auto mt-4 max-w-3xl text-base text-theme-secondary sm:text-lg">
+          <p className="text-theme-secondary mx-auto mt-4 max-w-3xl text-base sm:text-lg">
             شوف إيه اللي بيقوله طلابنا عن تجربتهم مع Code JS Academy
           </p>
         </div>
@@ -44,23 +46,24 @@ export function StudentReviewsSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="marquee-outer relative overflow-hidden">
           <div className="marquee flex w-max gap-5">
-            {[...images, ...images].map((img, i) => (
+            {images.map((img) => (
               <div
-                key={`${img.id}-${i}`}
+                key={img.id}
                 className="review-pill group cursor-pointer"
                 onClick={() => setSelectedImage(img.imageUrl)}
               >
-                <div className="relative h-44 w-64 overflow-hidden rounded-2xl border border-theme-card bg-theme-card shadow-lg transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(51,153,51,0.2)] sm:h-56 sm:w-80">
+                <div className="border-theme-card bg-theme-card relative h-44 w-64 overflow-hidden rounded-2xl border shadow-lg transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(51,153,51,0.2)] sm:h-56 sm:w-80">
                   <img
                     src={img.imageUrl}
-                    alt={img.caption ?? `رأي الطالب`}
+                    alt={img.caption ?? "رأي الطالب"}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 </div>
+
                 {img.caption && (
-                  <p className="mt-2.5 max-w-64 truncate text-center text-xs text-theme-secondary font-medium sm:max-w-80">
+                  <p className="text-theme-secondary mt-2.5 max-w-64 truncate text-center text-xs font-medium sm:max-w-80">
                     {img.caption}
                   </p>
                 )}
@@ -78,7 +81,7 @@ export function StudentReviewsSection() {
         >
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/20"
+            className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-2xl text-white transition hover:bg-white/20"
           >
             ✕
           </button>
