@@ -24,18 +24,6 @@ export function TestimonialsSection() {
               key={t.id}
               className="group card-hover card-theme flex flex-col overflow-hidden rounded-2xl border border-theme-card bg-theme-card transition-all duration-500 hover:-translate-y-1 hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/10"
             >
-              {/* Image */}
-              {t.avatarUrl && (
-                <div className="relative h-56 w-full overflow-hidden">
-                  <img
-                    src={t.avatarUrl}
-                    alt={t.name}
-                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                </div>
-              )}
-
               {/* Content */}
               <div className="flex flex-1 flex-col p-6">
                 {/* Stars */}
@@ -57,15 +45,34 @@ export function TestimonialsSection() {
 
                 {/* Author */}
                 <div className="flex items-center gap-3 border-t border-theme-card pt-4">
-                  {!t.avatarUrl && (
+                  {/* Avatar — shown only once, as a small circle in the author area */}
+                  {t.avatarUrl ? (
+                    <div className="h-9 w-9 shrink-0 overflow-hidden rounded-full border-2 border-brand-500/20">
+                      <img
+                        src={t.avatarUrl}
+                        alt={t.name}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ) : (
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-500/10 text-sm font-bold text-brand-400">
                       {t.name.charAt(0)}
                     </div>
                   )}
                   <div>
-                    <div className="text-sm font-semibold text-theme">{t.name}</div>
+                    {t.linkedinUrl ? (
+                      <a
+                        href={t.linkedinUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-semibold text-theme transition hover:text-brand-400"
+                      >
+                        {t.name}
+                      </a>
+                    ) : (
+                      <div className="text-sm font-semibold text-theme">{t.name}</div>
+                    )}
                     {t.role && <div className="text-xs text-theme-gold">{t.role}</div>}
-                    
                   </div>
                 </div>
               </div>

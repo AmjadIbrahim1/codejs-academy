@@ -215,6 +215,7 @@ exports.Prisma.TestimonialScalarFieldEnum = {
   role: 'role',
   content: 'content',
   avatarUrl: 'avatarUrl',
+  linkedinUrl: 'linkedinUrl',
   rating: 'rating',
   featured: 'featured',
   order: 'order',

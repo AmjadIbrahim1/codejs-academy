@@ -11707,6 +11707,7 @@ export namespace Prisma {
     role: string | null
     content: string | null
     avatarUrl: string | null
+    linkedinUrl: string | null
     rating: number | null
     featured: boolean | null
     order: number | null
@@ -11719,6 +11720,7 @@ export namespace Prisma {
     role: string | null
     content: string | null
     avatarUrl: string | null
+    linkedinUrl: string | null
     rating: number | null
     featured: boolean | null
     order: number | null
@@ -11731,6 +11733,7 @@ export namespace Prisma {
     role: number
     content: number
     avatarUrl: number
+    linkedinUrl: number
     rating: number
     featured: number
     order: number
@@ -11755,6 +11758,7 @@ export namespace Prisma {
     role?: true
     content?: true
     avatarUrl?: true
+    linkedinUrl?: true
     rating?: true
     featured?: true
     order?: true
@@ -11767,6 +11771,7 @@ export namespace Prisma {
     role?: true
     content?: true
     avatarUrl?: true
+    linkedinUrl?: true
     rating?: true
     featured?: true
     order?: true
@@ -11779,6 +11784,7 @@ export namespace Prisma {
     role?: true
     content?: true
     avatarUrl?: true
+    linkedinUrl?: true
     rating?: true
     featured?: true
     order?: true
@@ -11878,6 +11884,7 @@ export namespace Prisma {
     role: string | null
     content: string
     avatarUrl: string | null
+    linkedinUrl: string | null
     rating: number | null
     featured: boolean
     order: number
@@ -11909,6 +11916,7 @@ export namespace Prisma {
     role?: boolean
     content?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
     rating?: boolean
     featured?: boolean
     order?: boolean
@@ -11921,6 +11929,7 @@ export namespace Prisma {
     role?: boolean
     content?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
     rating?: boolean
     featured?: boolean
     order?: boolean
@@ -11933,6 +11942,7 @@ export namespace Prisma {
     role?: boolean
     content?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
     rating?: boolean
     featured?: boolean
     order?: boolean
@@ -11945,13 +11955,14 @@ export namespace Prisma {
     role?: boolean
     content?: boolean
     avatarUrl?: boolean
+    linkedinUrl?: boolean
     rating?: boolean
     featured?: boolean
     order?: boolean
     createdAt?: boolean
   }
 
-  export type TestimonialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "role" | "content" | "avatarUrl" | "rating" | "featured" | "order" | "createdAt", ExtArgs["result"]["testimonial"]>
+  export type TestimonialOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "role" | "content" | "avatarUrl" | "linkedinUrl" | "rating" | "featured" | "order" | "createdAt", ExtArgs["result"]["testimonial"]>
 
   export type $TestimonialPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Testimonial"
@@ -11962,6 +11973,7 @@ export namespace Prisma {
       role: string | null
       content: string
       avatarUrl: string | null
+      linkedinUrl: string | null
       rating: number | null
       featured: boolean
       order: number
@@ -12394,6 +12406,7 @@ export namespace Prisma {
     readonly role: FieldRef<"Testimonial", 'String'>
     readonly content: FieldRef<"Testimonial", 'String'>
     readonly avatarUrl: FieldRef<"Testimonial", 'String'>
+    readonly linkedinUrl: FieldRef<"Testimonial", 'String'>
     readonly rating: FieldRef<"Testimonial", 'Int'>
     readonly featured: FieldRef<"Testimonial", 'Boolean'>
     readonly order: FieldRef<"Testimonial", 'Int'>
@@ -24551,6 +24564,7 @@ export namespace Prisma {
     role: 'role',
     content: 'content',
     avatarUrl: 'avatarUrl',
+    linkedinUrl: 'linkedinUrl',
     rating: 'rating',
     featured: 'featured',
     order: 'order',
@@ -25388,6 +25402,7 @@ export namespace Prisma {
     role?: StringNullableFilter<"Testimonial"> | string | null
     content?: StringFilter<"Testimonial"> | string
     avatarUrl?: StringNullableFilter<"Testimonial"> | string | null
+    linkedinUrl?: StringNullableFilter<"Testimonial"> | string | null
     rating?: IntNullableFilter<"Testimonial"> | number | null
     featured?: BoolFilter<"Testimonial"> | boolean
     order?: IntFilter<"Testimonial"> | number
@@ -25400,6 +25415,7 @@ export namespace Prisma {
     role?: SortOrderInput | SortOrder
     content?: SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    linkedinUrl?: SortOrderInput | SortOrder
     rating?: SortOrderInput | SortOrder
     featured?: SortOrder
     order?: SortOrder
@@ -25415,6 +25431,7 @@ export namespace Prisma {
     role?: StringNullableFilter<"Testimonial"> | string | null
     content?: StringFilter<"Testimonial"> | string
     avatarUrl?: StringNullableFilter<"Testimonial"> | string | null
+    linkedinUrl?: StringNullableFilter<"Testimonial"> | string | null
     rating?: IntNullableFilter<"Testimonial"> | number | null
     featured?: BoolFilter<"Testimonial"> | boolean
     order?: IntFilter<"Testimonial"> | number
@@ -25427,6 +25444,7 @@ export namespace Prisma {
     role?: SortOrderInput | SortOrder
     content?: SortOrder
     avatarUrl?: SortOrderInput | SortOrder
+    linkedinUrl?: SortOrderInput | SortOrder
     rating?: SortOrderInput | SortOrder
     featured?: SortOrder
     order?: SortOrder
@@ -25447,6 +25465,7 @@ export namespace Prisma {
     role?: StringNullableWithAggregatesFilter<"Testimonial"> | string | null
     content?: StringWithAggregatesFilter<"Testimonial"> | string
     avatarUrl?: StringNullableWithAggregatesFilter<"Testimonial"> | string | null
+    linkedinUrl?: StringNullableWithAggregatesFilter<"Testimonial"> | string | null
     rating?: IntNullableWithAggregatesFilter<"Testimonial"> | number | null
     featured?: BoolWithAggregatesFilter<"Testimonial"> | boolean
     order?: IntWithAggregatesFilter<"Testimonial"> | number
@@ -26807,6 +26826,7 @@ export namespace Prisma {
     role?: string | null
     content: string
     avatarUrl?: string | null
+    linkedinUrl?: string | null
     rating?: number | null
     featured?: boolean
     order?: number
@@ -26819,6 +26839,7 @@ export namespace Prisma {
     role?: string | null
     content: string
     avatarUrl?: string | null
+    linkedinUrl?: string | null
     rating?: number | null
     featured?: boolean
     order?: number
@@ -26831,6 +26852,7 @@ export namespace Prisma {
     role?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
@@ -26843,6 +26865,7 @@ export namespace Prisma {
     role?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
@@ -26855,6 +26878,7 @@ export namespace Prisma {
     role?: string | null
     content: string
     avatarUrl?: string | null
+    linkedinUrl?: string | null
     rating?: number | null
     featured?: boolean
     order?: number
@@ -26867,6 +26891,7 @@ export namespace Prisma {
     role?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
@@ -26879,6 +26904,7 @@ export namespace Prisma {
     role?: NullableStringFieldUpdateOperationsInput | string | null
     content?: StringFieldUpdateOperationsInput | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkedinUrl?: NullableStringFieldUpdateOperationsInput | string | null
     rating?: NullableIntFieldUpdateOperationsInput | number | null
     featured?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
@@ -28269,6 +28295,7 @@ export namespace Prisma {
     role?: SortOrder
     content?: SortOrder
     avatarUrl?: SortOrder
+    linkedinUrl?: SortOrder
     rating?: SortOrder
     featured?: SortOrder
     order?: SortOrder
@@ -28286,6 +28313,7 @@ export namespace Prisma {
     role?: SortOrder
     content?: SortOrder
     avatarUrl?: SortOrder
+    linkedinUrl?: SortOrder
     rating?: SortOrder
     featured?: SortOrder
     order?: SortOrder
@@ -28298,6 +28326,7 @@ export namespace Prisma {
     role?: SortOrder
     content?: SortOrder
     avatarUrl?: SortOrder
+    linkedinUrl?: SortOrder
     rating?: SortOrder
     featured?: SortOrder
     order?: SortOrder

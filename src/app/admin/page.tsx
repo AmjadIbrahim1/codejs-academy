@@ -290,7 +290,7 @@ function TestimonialsManager() {
   const { data: testimonials, refetch } = api.testimonial.getAll.useQuery();
   const createTestimonial = api.testimonial.create.useMutation({ onSuccess: () => refetch() });
   const deleteTestimonial = api.testimonial.delete.useMutation({ onSuccess: () => refetch() });
-  const [form, setForm] = useState({ name: "", content: "" });
+  const [form, setForm] = useState({ name: "", content: "", linkedinUrl: "" });
 
   return (
     <div>        <h2 className="mb-4 text-lg font-bold text-theme">آراء الطلاب</h2>
@@ -299,7 +299,9 @@ function TestimonialsManager() {
           className="rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme placeholder:text-theme-tertiary" />
         <textarea placeholder="المحتوى" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })}
           className="rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme placeholder:text-theme-tertiary" />
-        <button onClick={() => { createTestimonial.mutate(form); setForm({ name: "", content: "" }); }}
+        <input placeholder="رابط LinkedIn (اختياري)" value={form.linkedinUrl} onChange={(e) => setForm({ ...form, linkedinUrl: e.target.value })}
+          className="rounded-lg border border-theme-input bg-theme-input px-3 py-2 text-sm text-theme placeholder:text-theme-tertiary" />
+        <button onClick={() => { createTestimonial.mutate({ name: form.name, content: form.content, linkedinUrl: form.linkedinUrl || undefined }); setForm({ name: "", content: "", linkedinUrl: "" }); }}
           className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-600">
           إضافة رأي
         </button>
@@ -307,12 +309,20 @@ function TestimonialsManager() {
       <div className="space-y-2">
         {testimonials?.map((t) => (
           <div key={t.id} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3">
-            <div>
-              <div className="text-sm font-medium text-theme">{t.name}</div>
-              <div className="text-xs text-dark-500">{t.content.slice(0, 80)}...</div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 text-sm font-medium text-theme">
+                {t.name}
+                {t.linkedinUrl && (
+                  <a href={t.linkedinUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 rounded bg-brand-500/10 px-2 py-0.5 text-[10px] text-brand-400 hover:bg-brand-500/20 hover:underline">
+                    LinkedIn
+                  </a>
+                )}
+              </div>
+              <div className="text-xs text-dark-500 truncate">{t.content.slice(0, 80)}...</div>
             </div>
             <button onClick={() => deleteTestimonial.mutate({ id: t.id })}
-              className="rounded-lg bg-red-500/10 px-3 py-1 text-xs text-red-400 hover:bg-red-500/20">
+              className="rounded-lg bg-red-500/10 px-3 py-1 text-xs text-red-400 hover:bg-red-500/20 flex-shrink-0">
               حذف
             </button>
           </div>

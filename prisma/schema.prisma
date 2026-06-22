@@ -124,15 +124,16 @@ model StudentHighlight {
 }
 
 model Testimonial {
-    id        String   @id @default(cuid())
-    name      String
-    role      String?  // e.g. "Student", "Graduate"
-    content   String
-    avatarUrl String?
-    rating    Int?     @default(5)
-    featured  Boolean  @default(false)
-    order     Int      @default(0)
-    createdAt DateTime @default(now())
+    id          String   @id @default(cuid())
+    name        String
+    role        String?  // e.g. "Student", "Graduate"
+    content     String
+    avatarUrl   String?
+    linkedinUrl String?
+    rating      Int?     @default(5)
+    featured    Boolean  @default(false)
+    order       Int      @default(0)
+    createdAt   DateTime @default(now())
 }
 
 model FAQ {
